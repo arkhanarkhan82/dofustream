@@ -78,11 +78,15 @@ class CMSServer(http.server.SimpleHTTPRequestHandler):
             # 1. Add all changes
             subprocess.run([git_cmd, 'add', '.'], cwd=DIRECTORY, check=True, capture_output=True, text=True)
             
-            # 2. Commit
-            subprocess.run([git_cmd, 'commit', '-m', 'CMS Admin Update'], cwd=DIRECTORY, check=False, capture_output=True, text=True) # Check False in case nothing to commit
+            # 2. Commit (may have nothing to commit, that's ok)
+            commit_result = subprocess.run([git_cmd, 'commit', '-m', 'CMS Admin Update'], cwd=DIRECTORY, check=False, capture_output=True, text=True)
             
-            # 3. Push
+            # 3. Push - try normal push first
             result = subprocess.run([git_cmd, 'push'], cwd=DIRECTORY, capture_output=True, text=True)
+            
+            # If push fails due to no upstream, set it and retry
+            if result.returncode != 0 and 'no upstream branch' in result.stderr:
+                result = subprocess.run([git_cmd, 'push', '--set-upstream', 'origin', 'main'], cwd=DIRECTORY, capture_output=True, text=True)
             
             if result.returncode == 0:
                 self.send_json_response({'status': 'success', 'message': 'Deployed to GitHub successfully!'})
