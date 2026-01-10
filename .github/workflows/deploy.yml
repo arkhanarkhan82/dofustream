@@ -1,0 +1,48 @@
+name: Deploy Live CMS
+
+on:
+  push:
+    paths:
+      - 'data/config.json'
+  workflow_dispatch:
+  repository_dispatch:
+    types: [update_content]
+  schedule:
+    - cron: '*/10 * * * *'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Run Build Engine
+        run: |
+          # Navigate to core and run build
+          cd "core"
+          python build_engine.py
+
+      - name: Commit & Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Add all generated files (HTML, etc)
+          git add .
+          
+          # Check for changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "🚀 Auto-Deploy: Content Update [skip ci]"
+            git push
+          fi
