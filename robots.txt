@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-
-
-Sitemap: https://dofunstreams.cfd/sitemap.xml
-
