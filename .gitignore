@@ -1,0 +1,25 @@
+# CMS Backend Files - DO NOT UPLOAD TO GITHUB
+# These files run locally on your computer to manage the site
+
+# Admin Panel
+admin/
+
+# Local Python Server
+server/
+
+# Build Scripts
+core/
+
+# Debug/Development Files
+_debug/
+
+# Windows Batch Script
+Start_CMS.bat
+
+# Git folder (already ignored by default but being explicit)
+.git/
+
+# Any local config or credentials
+*.local
+.env
+credentials.json
