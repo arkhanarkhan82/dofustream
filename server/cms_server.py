@@ -68,30 +68,42 @@ class CMSServer(http.server.SimpleHTTPRequestHandler):
     def handle_deploy(self):
         """
         Commits and Pushes changes to GitHub.
-        Assumes git is initialized and remote is set.
+        Uses force push to ensure repo contains ONLY CMS files.
         """
         try:
             git_cmd = find_git()
             if not git_cmd:
                 raise Exception("Git is not installed. Please install Git first.")
             
-            # 1. Add all changes
+            # 1. Add all changes (stages all CMS files)
             subprocess.run([git_cmd, 'add', '.'], cwd=DIRECTORY, check=True, capture_output=True, text=True)
             
             # 2. Commit (may have nothing to commit, that's ok)
             commit_result = subprocess.run([git_cmd, 'commit', '-m', 'CMS Admin Update'], cwd=DIRECTORY, check=False, capture_output=True, text=True)
             
-            # 3. Push - try normal push first
-            result = subprocess.run([git_cmd, 'push'], cwd=DIRECTORY, capture_output=True, text=True)
+            # 3. Check if we've ever pushed to this remote
+            check_result = subprocess.run([git_cmd, 'ls-remote', 'origin', 'main'], cwd=DIRECTORY, capture_output=True, text=True)
             
-            # If push fails due to no upstream, set it and retry
-            if result.returncode != 0 and 'no upstream branch' in result.stderr:
-                result = subprocess.run([git_cmd, 'push', '--set-upstream', 'origin', 'main'], cwd=DIRECTORY, capture_output=True, text=True)
+            # 4. Push with appropriate strategy
+            if check_result.returncode != 0 or not check_result.stdout.strip():
+                # Remote branch doesn't exist - first push
+                result = subprocess.run([git_cmd, 'push', '--set-upstream', 'origin', 'main', '--force'], cwd=DIRECTORY, capture_output=True, text=True)
+            else:
+                # Remote exists - force push to replace everything
+                result = subprocess.run([git_cmd, 'push', '--force'], cwd=DIRECTORY, capture_output=True, text=True)
             
             if result.returncode == 0:
-                self.send_json_response({'status': 'success', 'message': 'Deployed to GitHub successfully!'})
+                self.send_json_response({'status': 'success', 'message': 'All CMS files uploaded! Repository now contains only your CMS files.'})
             else:
-                self.send_json_response({'status': 'error', 'message': f"Push Failed: {result.stderr}"}, 500)
+                # Fallback: try with upstream if normal force push failed
+                if 'no upstream branch' in result.stderr:
+                    result = subprocess.run([git_cmd, 'push', '--set-upstream', 'origin', 'main', '--force'], cwd=DIRECTORY, capture_output=True, text=True)
+                    if result.returncode == 0:
+                        self.send_json_response({'status': 'success', 'message': 'All CMS files uploaded! Repository now contains only your CMS files.'})
+                    else:
+                        self.send_json_response({'status': 'error', 'message': f"Push Failed: {result.stderr}"}, 500)
+                else:
+                    self.send_json_response({'status': 'error', 'message': f"Push Failed: {result.stderr}"}, 500)
                 
         except Exception as e:
             self.send_json_response({'status': 'error', 'message': str(e)}, 500)
@@ -151,11 +163,10 @@ class CMSServer(http.server.SimpleHTTPRequestHandler):
             subprocess.run([git_cmd, 'remote', 'remove', 'origin'], cwd=DIRECTORY, check=False, capture_output=True, text=True) 
             subprocess.run([git_cmd, 'remote', 'add', 'origin', remote_url], cwd=DIRECTORY, check=True, capture_output=True, text=True)
 
-            # 4. Pull (to sync history) or Push (if empty)
-            # We try pull first
-            pull_res = subprocess.run([git_cmd, 'pull', 'origin', 'main', '--allow-unrelated-histories'], cwd=DIRECTORY, capture_output=True, text=True)
+            # Note: We DON'T pull here to avoid downloading unwanted files from the repo
+            # The first "Upload All" will replace everything in the repo with CMS files only
             
-            self.send_json_response({'status': 'success', 'message': f'Connected to {repo}. Git initialized successfully.'})
+            self.send_json_response({'status': 'success', 'message': f'Connected to {repo}. Ready to upload CMS files. Click "Upload All" to replace repository contents.'})
             
         except subprocess.CalledProcessError as e:
             error_msg = f"Git command failed: {e.stderr if e.stderr else str(e)}"
