@@ -522,6 +522,101 @@ function populateAllFields() {
     loadCronSettings();
 }
 
+function renderMenus() {
+    if (!currentConfig || !currentConfig.menus) return;
+    ['header', 'hero', 'footer_static'].forEach(sec => {
+        const container = document.getElementById(`menu-${sec}`);
+        if (container) {
+            container.innerHTML = (currentConfig.menus[sec] || []).map((item, idx) => `
+                <div class="menu-item-row">
+                    <div>${item.highlight ? '<span style="color:#facc15">★</span>' : ''} <strong>${item.title}</strong> <small>(${item.url})</small></div>
+                    <button class="btn-icon" onclick="deleteMenuItem('${sec}', ${idx})">×</button>
+                </div>
+            `).join('');
+        }
+    });
+}
+
+function openMenuModal(sec) {
+    document.getElementById('menuTargetSection').value = sec;
+    setVal('menuTitleItem', '');
+    setVal('menuUrlItem', '');
+    const modal = document.getElementById('menuModal');
+    if (modal) modal.style.display = 'flex';
+}
+
+function saveMenuItem() {
+    const sec = document.getElementById('menuTargetSection').value;
+    if (!currentConfig.menus) currentConfig.menus = {};
+    if (!currentConfig.menus[sec]) currentConfig.menus[sec] = [];
+    currentConfig.menus[sec].push({
+        title: getVal('menuTitleItem'),
+        url: getVal('menuUrlItem')
+    });
+    renderMenus();
+    document.getElementById('menuModal').style.display = 'none';
+}
+
+function deleteMenuItem(sec, idx) {
+    if (confirm('Delete this menu item?')) {
+        currentConfig.menus[sec] = currentConfig.menus[sec] || [];
+        currentConfig.menus[sec].splice(idx, 1);
+        renderMenus();
+    }
+}
+
+
+function renderLeagues() {
+    const container = document.getElementById('leaguesContainer');
+    if (!container || !currentLeagueMap) return;
+    container.innerHTML = Object.keys(currentLeagueMap).sort().map(l => `
+        <div class="card">
+            <div class="league-card-header">
+                <h3>${l}</h3>
+                <span>${currentLeagueMap[l].length} Teams</span>
+            </div>
+            <label>Teams (comma separated)</label>
+            <textarea class="team-list-editor" rows="6" data-league="${l}">${currentLeagueMap[l].join(', ')}</textarea>
+        </div>
+    `).join('');
+}
+
+function getGroupedLeagues() { return currentLeagueMap || {}; }
+
+window.copyAllLeaguesData = () => {
+    let o = ""; for (const [l, t] of Object.entries(getGroupedLeagues())) o += `LEAGUE: ${l}\nTEAMS: ${t.join(', ')}\n---\n`;
+    navigator.clipboard.writeText(o).then(() => alert("Copied!"));
+};
+
+window.openLeagueModal = () => {
+    const modal = document.getElementById('leagueModal');
+    if (modal) modal.style.display = 'flex';
+};
+
+window.saveNewLeague = () => {
+    const n = document.getElementById('newLeagueNameInput').value.trim();
+    if (n) {
+        if (!currentLeagueMap) currentLeagueMap = {};
+        currentLeagueMap[n] = ["new"];
+        renderLeagues();
+        document.getElementById('leagueModal').style.display = 'none';
+    }
+};
+
+function rebuildLeagueMapFromUI() {
+    const map = {};
+    document.querySelectorAll('.team-list-editor').forEach(t => {
+        const league = t.getAttribute('data-league');
+        if (league) {
+            map[league] = t.value.split(',')
+                .map(x => x.trim().toLowerCase().replace(/\s+/g, '-'))
+                .filter(x => x.length > 0);
+        }
+    });
+    return map;
+}
+
+
 function setValue(id, value) {
     if (document.getElementById(id)) document.getElementById(id).value = value || '';
 }
@@ -555,12 +650,16 @@ async function saveAllChanges() {
         );
 
         // 2. Save league_map.json
-        await updateGitHubFile(
-            REPO_FILES.LEAGUE_MAP,
-            JSON.stringify(currentLeagueMap, null, 2),
-            'Update league map [Admin Panel]',
-            currentLeagueMapSHA
-        );
+        const mapToSave = rebuildLeagueMapFromUI();
+        if (Object.keys(mapToSave).length > 0) {
+            currentLeagueMap = mapToSave; // Update internal state
+            await updateGitHubFile(
+                REPO_FILES.LEAGUE_MAP,
+                JSON.stringify(currentLeagueMap, null, 2),
+                'Update league map [Admin Panel]',
+                currentLeagueMapSHA
+            );
+        }
 
         showStatus(' All changes saved successfully!', 'success');
         // Reload
@@ -977,7 +1076,14 @@ function renderThemeSettings() {
     // Check if THEME_FIELDS is defined, if not, wait or skip
     if (typeof THEME_FIELDS !== 'undefined') {
         for (const [jsonKey, htmlId] of Object.entries(THEME_FIELDS)) {
-            if (t[jsonKey]) setVal(htmlId, t[jsonKey]);
+            const el = document.getElementById(htmlId);
+            if (!el) continue;
+            const val = t[jsonKey];
+            if (el.type === 'checkbox') {
+                el.checked = (val === true);
+            } else {
+                el.value = (val !== undefined && val !== null) ? val : "";
+            }
         }
     }
 
@@ -985,10 +1091,176 @@ function renderThemeSettings() {
     if (document.getElementById('val_maxWidth')) document.getElementById('val_maxWidth').innerText = (t.container_max_width || '1100') + 'px';
     if (document.getElementById('val_secLogo')) document.getElementById('val_secLogo').innerText = (t.section_logo_size || '24') + 'px';
 
+    saveCurrentHeaderInputs(); // NEW helper to ensure toggles work
     if (typeof toggleHeroInputs === 'function') toggleHeroInputs();
     if (typeof toggleHeaderInputs === 'function') toggleHeaderInputs();
     if (typeof toggleHeroBoxSettings === 'function') toggleHeroBoxSettings();
     if (typeof toggleFooterSlots === 'function') toggleFooterSlots();
+}
+
+function injectMissingThemeUI() {
+    const themeTab = document.getElementById('tab-theme');
+    if (!themeTab) return;
+
+    // Clean up old injections
+    const existingInput = document.getElementById('themeWildcardCat');
+    if (existingInput) {
+        const container = existingInput.closest('.grid-3');
+        if (container) container.remove();
+    }
+
+    const newSection = document.createElement('div');
+    newSection.className = 'grid-3';
+    newSection.innerHTML = `
+        <!-- CARD 1: CONTENT & LOGIC -->
+        <div class="card">
+            <h3>⚡ Content & Logic</h3>
+            <div class="range-wrapper" style="margin-bottom:15px; border-bottom:1px solid #333; padding-bottom:10px;">
+                <label style="color:#facc15;">🔥 Wildcard Category</label>
+                <input type="text" id="themeWildcardCat" placeholder="e.g. NFL, Premier League">
+            </div>
+
+            <h4 style="margin:15px 0 5px 0; font-size:0.8rem; color:#aaa;">Titles</h4>
+            <div class="grid-2" style="gap:10px;">
+                <div style="grid-column: span 2;"><input type="text" id="themeTextWildcardTitle" placeholder="Wildcard Title"></div>
+                <div style="grid-column: span 2;"><input type="text" id="themeTextTopUpcoming" placeholder="Top 5 Title"></div>
+                <div><label>Status Text</label><input type="text" id="themeTextSysStatus" placeholder="System Status: Online"></div>
+                <div><label>Live</label><input type="text" id="themeTextLiveTitle"></div>
+                <div><label>Show More</label><input type="text" id="themeTextShowMore"></div>
+                <div><label>Btn</label><input type="text" id="themeTextWatch"></div>
+                <div><label>Badge</label><input type="text" id="themeTextHd"></div>
+                <div><label>Link</label><input type="text" id="themeTextSectionLink"></div>
+                <div><label>Prefix</label><input type="text" id="themeTextSectionPrefix"></div>
+            </div>
+        </div>
+
+        <!-- CARD 2: STYLING & BORDERS -->
+        <div class="card">
+            <h3>🎨 Section Borders</h3>
+            <p style="font-size:0.75rem; color:#aaa; margin-bottom:15px;">Customize bottom borders for specific sections.</p>
+
+            <label>Trending Live</label>
+            <div class="input-group">
+                <input type="number" id="themeLiveBorderWidth" placeholder="Width (px)" value="1">
+                <input type="color" id="themeLiveBorderColor" value="#334155">
+            </div>
+
+            <label>Top 5 Upcoming</label>
+            <div class="input-group">
+                <input type="number" id="themeUpcomingBorderWidth" placeholder="Width (px)" value="1">
+                <input type="color" id="themeUpcomingBorderColor" value="#334155">
+            </div>
+
+            <label>Wildcard Section</label>
+            <div class="input-group">
+                <input type="number" id="themeWildcardBorderWidth" placeholder="Width (px)" value="1">
+                <input type="color" id="themeWildcardBorderColor" value="#334155">
+            </div>
+            <label>Grouped Sports/Leagues</label>
+            <div class="input-group">
+                <input type="number" id="themeGroupedBorderWidth" placeholder="Width (px)" value="1">
+                <input type="color" id="themeGroupedBorderColor" value="#334155">
+            </div>
+
+            <label>Footer Popular Leagues</label>
+            <div class="input-group">
+                <input type="number" id="themeLeaguesBorderWidth" placeholder="Width (px)" value="1">
+                <input type="color" id="themeLeaguesBorderColor" value="#334155">
+            </div>
+            
+            <h4 style="margin:15px 0 5px 0; font-size:0.8rem; color:#aaa;">Buttons</h4>
+            <div class="color-grid">
+                <div><label>Show More BG</label><input type="color" id="themeShowMoreBg"></div>
+                <div><label>Text</label><input type="color" id="themeShowMoreText"></div>
+            </div>
+            <div class="range-wrapper"><label>Radius</label><input type="text" id="themeShowMoreRadius" placeholder="30px"></div>
+        </div>
+
+        <!-- CARD 3: FLOATING ELEMENTS -->
+        <div class="card">
+            <h3>📍 Floating & Extras</h3>
+            <h4 style="margin:5px 0 5px 0; font-size:0.8rem; color:#aaa;">Back to Top</h4>
+            <div class="color-grid">
+                <div><label>BG</label><input type="color" id="themeBttBg"></div>
+                <div><label>Icon</label><input type="color" id="themeBttIcon"></div>
+            </div>
+            
+            <h4 style="margin:10px 0 5px 0; font-size:0.8rem; color:#aaa;">Section Logo Size</h4>
+             <input type="range" id="themeSectionLogoSize" min="0" max="60" step="1">
+
+            <h4 style="margin:10px 0 5px 0; font-size:0.8rem; color:#aaa;">Social Sidebar</h4>
+            <div class="grid-2" style="gap:10px;">
+                <div><label>Top</label><input type="text" id="themeSocialDeskTop"></div>
+                <div><label>Left</label><input type="text" id="themeSocialDeskLeft"></div>
+                <div><label>Scale</label><input type="text" id="themeSocialDeskScale"></div>
+            </div>
+            <h4 style="margin:10px 0 5px 0; font-size:0.8rem; color:#aaa;">Social Colors</h4>
+            <div class="color-grid">
+                <div><label>Telegram</label><input type="color" id="themeSocialTelegram"></div>
+                <div><label>WhatsApp</label><input type="color" id="themeSocialWhatsapp"></div>
+                <div><label>Reddit</label><input type="color" id="themeSocialReddit"></div>
+                <div><label>Twitter</label><input type="color" id="themeSocialTwitter"></div>
+            </div>
+             <h4 style="margin:10px 0 5px 0; font-size:0.8rem; color:#aaa;">Match Hover</h4>
+            <div class="color-grid">
+                <div><label>Hover BG</label><input type="color" id="themeMatchRowHoverBg"></div>
+                <div><label>Hover Border</label><input type="color" id="themeMatchRowHoverBorder"></div>
+            </div>
+        </div>
+    `;
+    themeTab.appendChild(newSection);
+}
+
+window.toggleHeroInputs = () => {
+    const el = document.getElementById('themeHeroBgStyle');
+    if (!el) return;
+    const style = el.value;
+    if (document.getElementById('heroSolidInput')) document.getElementById('heroSolidInput').style.display = style === 'solid' ? 'block' : 'none';
+    if (document.getElementById('heroGradientInput')) document.getElementById('heroGradientInput').style.display = style === 'gradient' ? 'grid' : 'none';
+    if (document.getElementById('heroImageInput')) document.getElementById('heroImageInput').style.display = style === 'image' ? 'block' : 'none';
+};
+
+window.toggleHeaderInputs = () => {
+    const el = document.getElementById('themeHeaderLayout');
+    if (!el) return;
+    const layout = el.value;
+    const iconGroup = document.getElementById('headerIconPosGroup');
+    if (iconGroup) iconGroup.style.display = (layout === 'center') ? 'block' : 'none';
+};
+
+window.toggleHeroBoxSettings = () => {
+    const el = document.getElementById('themeHeroLayoutMode');
+    if (!el) return;
+    const mode = el.value;
+    const settings = document.getElementById('heroBoxSettings');
+    if (settings) settings.style.display = (mode === 'box') ? 'block' : 'none';
+
+    const posSelect = document.getElementById('themeHeroMainBorderPos');
+    if (posSelect) {
+        const boxOption = posSelect.querySelector('.opt-box-only');
+        if (boxOption) {
+            if (mode === 'box') {
+                boxOption.disabled = false;
+                boxOption.innerText = "Match Box Width";
+            } else {
+                boxOption.disabled = true;
+                boxOption.innerText = "Match Box Width (Box Layout Only)";
+                if (posSelect.value === 'box') posSelect.value = 'full';
+            }
+        }
+    }
+};
+
+window.toggleFooterSlots = () => {
+    const el = document.getElementById('themeFooterCols');
+    if (!el) return;
+    const cols = el.value;
+    const slot3 = document.getElementById('footerSlot3Group');
+    if (slot3) slot3.style.display = (cols === '3') ? 'block' : 'none';
+};
+
+function saveCurrentHeaderInputs() {
+    // Helper to ensure DOM states match config
 }
 
 // Helpers
@@ -1256,52 +1528,7 @@ window.closePageEditor = () => { saveEditorContentToMemory(); document.getElemen
 window.createNewPage = () => { configData.pages.push({ id: 'p_' + Date.now(), title: "New", slug: "new", layout: "page", content: "", schemas: { org: true } }); renderPageList(); };
 window.deletePage = (id) => { if (confirm("Del?")) { configData.pages = configData.pages.filter(p => p.id !== id); renderPageList(); } };
 
-function renderMenus() {
-    ['header', 'hero', 'footer_static'].forEach(sec => {
-        if (document.getElementById(`menu-${sec}`)) {
-            document.getElementById(`menu-${sec}`).innerHTML = (configData.menus[sec] || []).map((item, idx) => `
-                <div class="menu-item-row"><div>${item.highlight ? '<span style="color:#facc15">★</span>' : ''} <strong>${item.title}</strong> <small>(${item.url})</small></div><button class="btn-icon" onclick="deleteMenuItem('${sec}', ${idx})">×</button></div>
-            `).join('');
-        }
-    });
-}
-window.openMenuModal = (sec) => {
-    document.getElementById('menuTargetSection').value = sec;
-    setVal('menuTitleItem', ''); setVal('menuUrlItem', '');
-    const chk = document.getElementById('menuHighlightCheck'); if (chk) chk.parentNode.remove();
-    if (sec === 'header') {
-        const w = document.createElement('div'); w.innerHTML = `<label style="display:inline-flex;gap:5px;margin-top:10px;"><input type="checkbox" id="menuHighlightCheck"> Highlight</label>`;
-        document.querySelector('#menuModal .modal-content').insertBefore(w, document.querySelector('#menuModal .modal-actions'));
-    }
-    document.getElementById('menuModal').style.display = 'flex';
-};
-window.saveMenuItem = () => {
-    const sec = document.getElementById('menuTargetSection').value;
-    if (!configData.menus[sec]) configData.menus[sec] = [];
-    configData.menus[sec].push({ title: getVal('menuTitleItem'), url: getVal('menuUrlItem'), highlight: document.getElementById('menuHighlightCheck')?.checked });
-    renderMenus(); document.getElementById('menuModal').style.display = 'none';
-};
-window.deleteMenuItem = (sec, idx) => { configData.menus[sec].splice(idx, 1); renderMenus(); };
-
-function getGroupedLeagues() { return currentLeagueMap || {}; }
-function renderLeagues() {
-    const c = document.getElementById('leaguesContainer'); if (!c) return;
-    const g = getGroupedLeagues();
-    c.innerHTML = Object.keys(g).sort().map(l => `<div class="card"><div class="league-card-header"><h3>${l}</h3><span>${g[l].length} Teams</span></div><label>Teams</label><textarea class="team-list-editor" rows="6" data-league="${l}">${g[l].join(', ')}</textarea></div>`).join('');
-}
-window.copyAllLeaguesData = () => {
-    let o = ""; for (const [l, t] of Object.entries(getGroupedLeagues())) o += `LEAGUE: ${l}\nTEAMS: ${t.join(', ')}\n---\n`;
-    navigator.clipboard.writeText(o).then(() => alert("Copied!"));
-};
-window.openLeagueModal = () => document.getElementById('leagueModal').style.display = 'flex';
-window.saveNewLeague = () => {
-    const n = document.getElementById('newLeagueNameInput').value.trim();
-    if (n) { if (!currentLeagueMap) currentLeagueMap = {}; currentLeagueMap[n] = ["new"]; renderLeagues(); document.getElementById('leagueModal').style.display = 'none'; }
-};
-function rebuildLeagueMapFromUI() {
-    const map = {}; document.querySelectorAll('.team-list-editor').forEach(t => { map[t.getAttribute('data-league')] = t.value.split(',').map(x => x.trim().toLowerCase().replace(/\s+/g, '-')).filter(x => x.length > 0); });
-    return map;
-}
+// League and Menu helpers moved to consistent locations
 
 // ==========================================
 // NEW: THEME CONTEXT SWITCHER LOGIC
