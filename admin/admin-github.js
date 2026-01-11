@@ -367,6 +367,11 @@ async function loadConfigFromGitHub() {
         }
 
         // Normalization
+        if (!currentConfig) {
+            console.warn('Config was null, resetting to default');
+            currentConfig = JSON.parse(JSON.stringify(DEMO_CONFIG));
+        }
+
         if (!currentConfig.pages) currentConfig.pages = DEMO_CONFIG.pages;
         if (!currentConfig.sport_priorities) currentConfig.sport_priorities = JSON.parse(JSON.stringify(DEFAULT_PRIORITIES));
         if (!currentConfig.social_sharing) currentConfig.social_sharing = DEMO_CONFIG.social_sharing;
