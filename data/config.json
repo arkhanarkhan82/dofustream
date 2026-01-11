@@ -399,15 +399,15 @@
   ],
   "hero_categories": [
     {
-      "title": "🏀 NBA",
+      "title": "ð NBA",
       "url": "/nba/"
     },
     {
-      "title": "🏈 NFL",
+      "title": "ð NFL",
       "url": "/nfl/"
     },
     {
-      "title": "🥊 UFC",
+      "title": "ð¥ UFC",
       "url": "/ufc/"
     }
   ],
@@ -516,15 +516,15 @@
     ],
     "hero": [
       {
-        "title": "⚾ MLB",
+        "title": "â¾ MLB",
         "url": "#"
       },
       {
-        "title": "🏀 NBA",
+        "title": "ð NBA",
         "url": "/nba"
       },
       {
-        "title": "🥊 UFC",
+        "title": "ð¥ UFC",
         "url": "/#ufc",
         "highlight": false
       }
@@ -742,7 +742,7 @@
     "sys_status_bg_transparent": false
   },
   "articles": {
-    "league": "\n<p>Experience the thrill of <strong>{{NAME}}</strong>, the premier competition in <strong>{{SPORT}}</strong>. Whether you are a die-hard fan following the standings or a casual viewer catching a big game, <strong>{{DOMAIN}}</strong> offers comprehensive access to every match of the {{YEAR}} season. We are dedicated to providing high-definition <strong>{{SPORT}} streams</strong> that connect you directly to the stadium atmosphere.</p>\n\n<h2>Why {{NAME}} is the Pinnacle of {{SPORT}}</h2>\n<p>The <strong>{{NAME}}</strong> represents the highest level of athletic performance in the world of {{SPORT}}. With historic rivalries and world-class talent, every game carries significant weight. Our platform stacks the most important entities—from the star players to the iconic venues—ensuring you get the full context of the match.</p>\n<ul>\n    <li><strong>Complete {{SPORT}} Schedule:</strong> Don't miss a single round. We track every {{NAME}} fixture in real-time.</li>\n    <li><strong>Adaptive HD Streaming:</strong> Our player optimizes {{SPORT}} action for fast-paced movement, ensuring you see every play clearly.</li>\n    <li><strong>Cross-Device Compatibility:</strong> Watch {{NAME}} on your phone, tablet, or desktop without installing any apps.</li>\n</ul>\n\n<h2>How to Stream {{NAME}} Games on {{DOMAIN}}</h2>\n<p>We make it easy to follow your favorite <strong>{{SPORT}} teams</strong>. Simply locate your match in the schedule above. The list is sorted chronologically, prioritizing live {{NAME}} events so you can jump straight into the action. Our links are vetted for stability, ensuring a seamless viewing experience even during high-traffic <strong>{{NAME}} playoffs</strong> or finals.</p>\n\n<h3>{{NAME}} Streaming FAQ</h3>\n<p><strong>Is this service free?</strong><br>\nYes. We believe that <strong>{{SPORT}}</strong> fans shouldn't be locked behind paywalls. {{DOMAIN}} provides open access to {{NAME}} streams.</p>\n\n<p><strong>What is the video quality?</strong><br>\nWe aim for 1080p and 720p definition. <strong>{{SPORT}}</strong> requires high frame rates to track the fast movement, and our streams are selected to handle this demand.</p>",
+    "league": "\n<p>Experience the thrill of <strong>{{NAME}}</strong>, the premier competition in <strong>{{SPORT}}</strong>. Whether you are a die-hard fan following the standings or a casual viewer catching a big game, <strong>{{DOMAIN}}</strong> offers comprehensive access to every match of the {{YEAR}} season. We are dedicated to providing high-definition <strong>{{SPORT}} streams</strong> that connect you directly to the stadium atmosphere.</p>\n\n<h2>Why {{NAME}} is the Pinnacle of {{SPORT}}</h2>\n<p>The <strong>{{NAME}}</strong> represents the highest level of athletic performance in the world of {{SPORT}}. With historic rivalries and world-class talent, every game carries significant weight. Our platform stacks the most important entitiesâfrom the star players to the iconic venuesâensuring you get the full context of the match.</p>\n<ul>\n    <li><strong>Complete {{SPORT}} Schedule:</strong> Don't miss a single round. We track every {{NAME}} fixture in real-time.</li>\n    <li><strong>Adaptive HD Streaming:</strong> Our player optimizes {{SPORT}} action for fast-paced movement, ensuring you see every play clearly.</li>\n    <li><strong>Cross-Device Compatibility:</strong> Watch {{NAME}} on your phone, tablet, or desktop without installing any apps.</li>\n</ul>\n\n<h2>How to Stream {{NAME}} Games on {{DOMAIN}}</h2>\n<p>We make it easy to follow your favorite <strong>{{SPORT}} teams</strong>. Simply locate your match in the schedule above. The list is sorted chronologically, prioritizing live {{NAME}} events so you can jump straight into the action. Our links are vetted for stability, ensuring a seamless viewing experience even during high-traffic <strong>{{NAME}} playoffs</strong> or finals.</p>\n\n<h3>{{NAME}} Streaming FAQ</h3>\n<p><strong>Is this service free?</strong><br>\nYes. We believe that <strong>{{SPORT}}</strong> fans shouldn't be locked behind paywalls. {{DOMAIN}} provides open access to {{NAME}} streams.</p>\n\n<p><strong>What is the video quality?</strong><br>\nWe aim for 1080p and 720p definition. <strong>{{SPORT}}</strong> requires high frame rates to track the fast movement, and our streams are selected to handle this demand.</p>",
     "sport": "",
     "excluded": "home, about, contact",
     "league_h1": "Watch {{NAME}} Live Streams and Schedules",
@@ -1097,5 +1097,10 @@
     "ad_mobile": "<script>\n  atOptions = {\n    'key' : '7d6dda6ba79d895750952d3835e19093',\n    'format' : 'iframe',\n    'height' : 90,\n    'width' : 728,\n    'params' : {}\n  };\n</script>\n<script src=\"https://www.highperformanceformat.com/7d6dda6ba79d895750952d3835e19093/invoke.js\"></script>\n",
     "ad_sidebar_1": "",
     "ad_sidebar_2": "<script>\n  atOptions = {\n    'key' : 'f1a48532f479213bd792812a297ae53d',\n    'format' : 'iframe',\n    'height' : 250,\n    'width' : 300,\n    'params' : {}\n  };\n</script>\n<script src=\"https://www.highperformanceformat.com/f1a48532f479213bd792812a297ae53d/invoke.js\"></script>"
+  },
+  "automation": {
+    "api_key": "Gylfm3xkdDWrJuHqJqYX1WLcXtJkc70Hha4+PVvieR0=",
+    "job_id": "7146031",
+    "interval": "10"
   }
 }
