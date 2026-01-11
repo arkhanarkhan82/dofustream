@@ -33,15 +33,15 @@ def load_json(path):
         print(f"❌ Error: Invalid JSON in {path}")
         return None
 
-def fetch_live_data():
+def fetch_live_data(api_url):
     """
     Fetches raw node data from Vercel API.
     """
-    print(f"🌍 Fetching live data from {API_URL}...")
+    print(f"🌍 Fetching live data from {api_url}...")
     try:
         # Create unverified context to avoid SSL errors with urllib if certs are missing
         context = ssl._create_unverified_context()
-        with urllib.request.urlopen(API_URL, context=context, timeout=10) as response:
+        with urllib.request.urlopen(api_url, context=context, timeout=10) as response:
             if response.status == 200:
                 raw = response.read().decode('utf-8')
                 try:
@@ -249,8 +249,12 @@ def main():
 
     log_to_file(f"Config loaded. Type: {type(config)}")
 
+    # Get API URL from config or fallback
+    site_settings = config.get('site_settings', {})
+    api_url = site_settings.get('api_url', API_URL)
+
     # 2. Fetch API
-    raw_data = fetch_live_data() 
+    raw_data = fetch_live_data(api_url) 
     if not raw_data:
         log_to_file("❌ Build Failed: No data fetched.")
         return
@@ -505,6 +509,51 @@ def main():
 def inject_variables(html, config, title=None, is_home=False):
     settings = config.get('site_settings', {})
     theme = config.get('theme', {})
+    
+    # --- CLIENT SIDE HYDRATION INJECTIONS ---
+    # 1. API URL (Critical for JS fetching)
+    api_url = settings.get('api_url', API_URL)
+    html = html.replace('{{API_URL}}', api_url)
+    
+    # 2. Target Country
+    country = settings.get('target_country', 'US')
+    html = html.replace('{{TARGET_COUNTRY}}', country)
+    
+    # 3. Parameters
+    html = html.replace('{{PARAM_LIVE}}', settings.get('param_live', 'stream'))
+    html = html.replace('{{PARAM_INFO}}', settings.get('param_info', 'info'))
+    html = html.replace('{{DOMAIN}}', settings.get('domain', 'example.com'))
+    
+    # 4. JSON Objects for JS Constants
+    priorities = config.get('sport_priorities', {}).get(country, {})
+    html = html.replace('{{JS_PRIORITIES}}', json.dumps(priorities))
+    
+    # League Map (Need to load it from file or use empty if not passed, but usually we don't pass it here. 
+    # Let's load it strictly for injection or assume it's global? 
+    # Better: Load it here or pass it. For now, let's load it to be safe.)
+    league_map_path = os.path.join(CMS_ROOT, 'assets', 'data', 'league_map.json')
+    league_map = load_json(league_map_path) or {}
+    html = html.replace('{{JS_LEAGUE_MAP}}', json.dumps(league_map))
+    
+    html = html.replace('{{JS_IMAGE_MAP}}', '{}') # Placeholder or load if we had an image map file
+    
+    # Theme Config for JS
+    html = html.replace('{{JS_THEME_CONFIG}}', json.dumps(theme))
+    
+    # Wildcard
+    wildcard = theme.get('wildcard_category', '')
+    html = html.replace('{{WILDCARD_CATEGORY}}', wildcard)
+    
+    # Text Labels
+    html = html.replace('{{TEXT_WILDCARD_TITLE}}', theme.get('text_wildcard_title', ''))
+    html = html.replace('{{TEXT_SECTION_PREFIX}}', theme.get('text_section_prefix', ''))
+    html = html.replace('{{TEXT_TOP_UPCOMING_TITLE}}', theme.get('text_top_upcoming_title', ''))
+    html = html.replace('{{TEXT_SHOW_MORE}}', theme.get('text_show_more', 'Show More'))
+    html = html.replace('{{TEXT_SECTION_LINK}}', theme.get('text_section_link', 'Show All'))
+    html = html.replace('{{TEXT_WATCH_BTN}}', theme.get('text_watch_btn', 'Watch'))
+    html = html.replace('{{TEXT_HD_BADGE}}', theme.get('text_hd_badge', 'HD'))
+
+    # --- SERVER SIDE RENDERING INJECTIONS ---
     
     # Basic
     page_title = settings.get('title_part_1', 'Sport') + settings.get('title_part_2', 'Stream')

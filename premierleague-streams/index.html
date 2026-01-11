@@ -764,7 +764,7 @@
                 <div id="trending-list" class="match-list">
     <div class="match-row live" data-match-id="rajshahi-warriors-vs-rangpur-riders-de9d8d9e4d176aefe4f098c6cbab5136">
         <div class="col-time">
-            <span class="time-main">30'</span>
+            <span class="time-main">1h 16'</span>
         </div>
         <div class="teams-wrapper">
             <div class="team-name">
@@ -784,7 +784,7 @@
         </div>
     </div>
     </div>
-                <button id="show-more-live" class="show-more-btn" style="display:none"> ▼</button>
+                <button id="show-more-live" class="show-more-btn" style="display:none">View more ▼</button>
                 <div id="hidden-live-list" class="match-list" style="display:none; margin-top:10px;"></div>
             </div>
         </div>
@@ -812,7 +812,7 @@
         <div>
     <div class="match-row " data-match-id="dhaka-capitals-vs-noakhali-express-863b0eb88a52f107c9713f284342e1bb">
         <div class="col-time">
-            <span class="time-main">4h 29m</span>
+            <span class="time-main">3h 43m</span>
         </div>
         <div class="teams-wrapper">
             <div class="team-name">
@@ -834,7 +834,7 @@
     
     <div class="match-row " data-match-id="ashdod-vs-hapoel-ironi-kiryat-shmona-2bdab221d485e594114ef1597d3309cc">
         <div class="col-time">
-            <span class="time-main">9h 59m</span>
+            <span class="time-main">9h 13m</span>
         </div>
         <div class="teams-wrapper">
             <div class="team-name">
@@ -856,7 +856,7 @@
     
     <div class="match-row " data-match-id="wolves-u21-vs-manchester-utd-u21-208e50b978f409c107d85f2b70c19832">
         <div class="col-time">
-            <span class="time-main">1d 11h</span>
+            <span class="time-main">1d 10h</span>
         </div>
         <div class="teams-wrapper">
             <div class="team-name">
@@ -906,23 +906,23 @@
         // ==========================================
         // 1. CONFIGURATION & STATE
         // ==========================================
-        const API_URL = "";
-        const TARGET_COUNTRY = "";
-        const PARAM_LIVE = "";
-        const PARAM_INFO = "";
-        const PRIORITIES = ; 
-        const SITE_DOMAIN = "https://";
+        const API_URL = "https://vercelapi-olive.vercel.app/api/sync-nodes";
+        const TARGET_COUNTRY = "US";
+        const PARAM_LIVE = "streams";
+        const PARAM_INFO = "livestream";
+        const PRIORITIES = {"_HIDE_OTHERS": false, "_BOOST": "nhl", "NFL": {"score": 100, "isLeague": true, "hasLink": true, "isHidden": false}, "NBA": {"score": 99, "isLeague": true, "hasLink": true, "isHidden": false}, "NCAA": {"score": 98, "isLeague": true, "hasLink": true, "isHidden": false}, "MLB": {"score": 97, "isLeague": true, "hasLink": true, "isHidden": false}, "NHL": {"score": 96, "isLeague": true, "hasLink": true, "isHidden": false}, "UFC": {"score": 95, "isLeague": true, "hasLink": true, "isHidden": false}, "Premier League": {"score": 90, "isLeague": true, "hasLink": true, "isHidden": false}, "Champions League": {"score": 89, "isLeague": true, "hasLink": true, "isHidden": false}, "Formula 1": {"score": 88, "isLeague": true, "hasLink": true, "isHidden": false}, "MLS": {"score": 87, "isLeague": true, "hasLink": true, "isHidden": false}, "Africa Cup of Nations": {"score": 86, "isLeague": true, "hasLink": true, "isHidden": false}, "La Liga": {"score": 85, "isLeague": true, "hasLink": true, "isHidden": false}, "Liga MX": {"score": 84, "isLeague": true, "hasLink": false, "isHidden": false}, "Football": {"score": 79, "isLeague": false, "hasLink": false, "isHidden": false}, "Basketball": {"score": 78, "isLeague": false, "hasLink": false, "isHidden": false}, "Baseball": {"score": 77, "isLeague": false, "hasLink": false, "isHidden": false}, "Fighting": {"score": 76, "isLeague": false, "hasLink": false, "isHidden": false}, "Soccer": {"score": 60, "isLeague": false, "hasLink": false, "isHidden": false}, "Tennis": {"score": 40, "isLeague": false, "hasLink": true, "isHidden": false}, "Golf": {"score": 30, "isLeague": false, "hasLink": false, "isHidden": false}}; 
+        const SITE_DOMAIN = "https://streameast.guru";
         
         // SERVER-SIDE INJECTED MAPS (Performance Optimized)
-        const TEAM_TO_LEAGUE = ; 
-        const IMAGE_MAP = ;
+        const TEAM_TO_LEAGUE = {"A-League Men": ["adelaide-united", "auckland-fc", "brisbane-roar", "central-coast-mariners", "macarthur-fc", "melbourne-city", "melbourne-victory", "newcastle-jets", "perth-glory", "sydney-fc", "wellington-phoenix", "western-sydney-wanderers", "western-united"], "A-League Women": ["adelaide-united", "brisbane-roar", "canberra-united", "central-coast-mariners", "melbourne-city", "melbourne-victory", "newcastle-jets", "perth-glory", "sydney-fc", "wellington-phoenix", "western-sydney-wanderers", "western-united"], "Bundesliga": ["bayer-leverkusen", "bayern-munich", "bochum", "borussia-dortmund", "borussia-monchengladbach", "eintracht-frankfurt", "fc-augsburg", "fc-heidenheim", "freiburg", "holstein-kiel", "mainz-05", "rb-leipzig", "st-pauli", "stuttgart", "tsg-hoffenheim", "union-berlin", "werder-bremen", "wolfsburg"], "Championship": ["blackburn-rovers", "bristol-city", "burnley", "cardiff-city", "coventry-city", "derby-county", "hull-city", "leeds-united", "luton-town", "middlesbrough", "millwall", "norwich-city", "oxford-united", "plymouth-argyle", "portsmouth", "preston-north-end", "queens-park-rangers", "sheffield-united", "sheffield-wednesday", "stoke-city", "sunderland", "swansea-city", "watford", "west-bromwich-albion"], "EUROLEAGUE": ["alba-berlin", "anadolu-efes", "as-monaco", "baskonia", "bayern-munich", "crvena-zvezda", "fc-barcelona", "fenerbahce", "ldlc-asvel", "maccabi-tel-aviv", "olimpia-milano", "olympiacos", "panathinaikos", "paris-basketball", "partizan", "real-madrid", "virtus-bologna", "zalgiris"], "Eredivisie": ["ajax", "almere-city", "az-alkmaar", "feyenoord", "fortuna-sittard", "go-ahead-eagles", "groningen", "heerenveen", "heracles-almelo", "nac-breda", "nec-nijmegen", "pec-zwolle", "psv-eindhoven", "rkc-waalwijk", "sparta-rotterdam", "twente", "utrecht", "willem-ii"], "FORMULA 1": ["alpine", "aston-martin", "ferrari", "haas", "kick-sauber", "mclaren", "mercedes", "rb", "red-bull-racing", "williams"], "La Liga": ["athletic-bilbao", "atletico-madrid", "barcelona", "celta-vigo", "deportivo-alaves", "espanyol", "getafe", "girona", "las-palmas", "leganes", "mallorca", "osasuna", "rayo-vallecano", "real-betis", "real-madrid", "real-sociedad", "real-valladolid", "sevilla", "valencia", "villarreal"], "Ligue 1": ["angers", "auxerre", "brest", "le-havre", "lens", "lille", "lyon", "marseille", "monaco", "montpellier", "nantes", "nice", "paris-saint-germain", "reims", "rennes", "saint-etienne", "strasbourg", "toulouse"], "MLB": ["arizona-diamondbacks", "atlanta-braves", "baltimore-orioles", "boston-red-sox", "chicago-cubs", "chicago-white-sox", "cincinnati-reds", "cleveland-guardians", "colorado-rockies", "detroit-tigers", "houston-astros", "kansas-city-royals", "los-angeles-angels", "los-angeles-dodgers", "miami-marlins", "milwaukee-brewers", "minnesota-twins", "new-york-mets", "new-york-yankees", "oakland-athletics", "philadelphia-phillies", "pittsburgh-pirates", "san-diego-padres", "san-francisco-giants", "seattle-mariners", "st-louis-cardinals", "tampa-bay-rays", "texas-rangers", "toronto-blue-jays", "washington-nationals"], "MLS": ["atlanta-united", "austin-fc", "charlotte-fc", "chicago-fire", "fc-cincinnati", "colorado-rapids", "columbus-crew", "dc-united", "fc-dallas", "houston-dynamo", "inter-miami", "la-galaxy", "lafc", "minnesota-united", "cf-montreal", "nashville-sc", "new-england-revolution", "new-york-city-fc", "new-york-red-bulls", "orlando-city", "philadelphia-union", "portland-timbers", "real-salt-lake", "san-diego-fc", "san-jose-earthquakes", "seattle-sounders", "sporting-kansas-city", "st-louis-city", "toronto-fc", "vancouver-whitecaps"], "NBA": ["atlanta-hawks", "boston-celtics", "brooklyn-nets", "charlotte-hornets", "chicago-bulls", "cleveland-cavaliers", "dallas-mavericks", "denver-nuggets", "detroit-pistons", "golden-state-warriors", "houston-rockets", "indiana-pacers", "los-angeles-clippers", "los-angeles-lakers", "memphis-grizzlies", "miami-heat", "milwaukee-bucks", "minnesota-timberwolves", "new-orleans-pelicans", "new-york-knicks", "oklahoma-city-thunder", "orlando-magic", "philadelphia-76ers", "phoenix-suns", "portland-trail-blazers", "sacramento-kings", "san-antonio-spurs", "toronto-raptors", "utah-jazz", "washington-wizards"], "NFL": ["arizona-cardinals", "atlanta-falcons", "baltimore-ravens", "buffalo-bills", "carolina-panthers", "chicago-bears", "cincinnati-bengals", "cleveland-browns", "dallas-cowboys", "denver-broncos", "detroit-lions", "green-bay-packers", "houston-texans", "indianapolis-colts", "jacksonville-jaguars", "kansas-city-chiefs", "las-vegas-raiders", "los-angeles-chargers", "los-angeles-rams", "miami-dolphins", "minnesota-vikings", "new-england-patriots", "new-orleans-saints", "new-york-giants", "new-york-jets", "philadelphia-eagles", "pittsburgh-steelers", "san-francisco-49ers", "seattle-seahawks", "tampa-bay-buccaneers", "tennessee-titans", "washington-commanders"], "NHL": ["anaheim-ducks", "boston-bruins", "buffalo-sabres", "calgary-flames", "carolina-hurricanes", "chicago-blackhawks", "colorado-avalanche", "columbus-blue-jackets", "dallas-stars", "detroit-red-wings", "edmonton-oilers", "florida-panthers", "los-angeles-kings", "minnesota-wild", "montreal-canadiens", "nashville-predators", "new-jersey-devils", "new-york-islanders", "new-york-rangers", "ottawa-senators", "philadelphia-flyers", "pittsburgh-penguins", "san-jose-sharks", "seattle-kraken", "st-louis-blues", "tampa-bay-lightning", "toronto-maple-leafs", "utah-hockey-club", "vancouver-canucks", "vegas-golden-knights", "washington-capitals", "winnipeg-jets"], "Premier League": ["arsenal", "aston-villa", "bournemouth", "brentford", "brighton-and-hove-albion", "chelsea", "crystal-palace", "everton", "fulham", "ipswich-town", "leicester-city", "liverpool", "manchester-city", "manchester-united", "newcastle-united", "nottingham-forest", "southampton", "tottenham-hotspur", "west-ham-united", "wolverhampton-wanderers"], "Primeira Liga": ["arouca", "avs", "benfica", "boavista", "braga", "casa-pia", "estoril-praia", "estrela-amadora", "famalicao", "farense", "gil-vicente", "moreirense", "nacional", "porto", "rio-ave", "santa-clara", "sporting-cp", "vitoria-guimaraes"], "Saudi Pro League": ["al-ahli", "al-akhdoud", "al-etifaq", "al-fateh", "al-fayha", "al-hilal", "al-ittihad", "al-khaleej", "al-kholood", "al-nassr", "al-orubah", "al-qadsiah", "al-raed", "al-riyadh", "al-shabab", "al-taawoun", "al-tai", "al-wehda", "damac"], "Scottish Premiership": ["aberdeen", "celtic", "dundee", "dundee-united", "heart-of-midlothian", "hibernian", "kilmarnock", "motherwell", "rangers", "ross-county", "st-johnstone", "st-mirren"], "Serie A": ["ac-milan", "atalanta", "bologna", "cagliari", "como", "empoli", "fiorentina", "genoa", "hellas-verona", "inter-milan", "juventus", "lazio", "lecce", "monza", "napoli", "parma", "roma", "torino", "udinese", "venezia"], "null": ["<h2>watch-{{home}}-vs-{{away}}-live-stream</h2>-<p>-get-ready-for-the-ultimate-{{sport}}-showdown!-<strong>{{home}}</strong>-takes-on-<strong>{{away}}</strong>-in-the-{{league}}.-the-event-is-scheduled-to-start-at-<strong>{{time}}</strong>-on-<strong>{{date}}</strong>.-</p>-<p>-{{site_name}}-is-your-number-one-source-for-free-live-sports.-whether-you-are-rooting-for-{{home}}-or-{{away}}", "we-provide-the-highest-quality-streams-with-zero-buffering.-</p>-<h3>match-preview:-{{home}}-vs-{{away}}</h3>-<p>-this-{{league}}-match-promises-to-be-exciting.-join-our-community-chat-on-the-right-side-to-discuss-the-play-by-play-action-with-other-fans.-</p>-<h3>how-to-watch-{{league}}-online</h3>-<ol>-<li>wait-for-the-countdown-to-finish.</li>-<li>click-the-\"watch-live-stream\"-button.</li>-<li>select-a-server-from-the-list.</li>-<li>enjoy-{{home}}-vs-{{away}}-in-hd!</li>-</ol>-<hr-style=\"border:-0;-border-top:-1px-solid-var(--border);-margin:-30px-0;\">-<p-style=\"font-size:-0.8rem;-color:-var(--text-muted);\">-<strong>disclaimer:</strong>-we-do-not-host-any-content.-this-page-allows-you-to-watch-{{home}}-vs-{{away}}-via-external-video-providers.-</p>"]}; 
+        const IMAGE_MAP = {};
         const WILDCARD_CATEGORY = "";
 
         const SHARE_CONFIG = {
             excluded: ['dmca', 'about', 'contact', 'privacy'],
             counts: { telegram: 1240, whatsapp: 850, reddit: 340, twitter: 510 } 
         };
-        const THEME_CONFIG = ; 
+        const THEME_CONFIG = {"font_family_base": "system-ui, -apple-system, sans-serif", "font_family_headings": "'Courier New', monospace", "border_radius_base": "0", "container_max_width": "950", "brand_primary": "#d00000", "brand_dark": "#8a0000", "accent_gold": "#ffd700", "status_green": "#00e676", "bg_body": "#050505", "bg_panel": "#0f0f0f", "text_main": "#ffffff", "text_muted": "#888888", "border_color": "#222222", "scrollbar_thumb_color": "#333333", "header_bg": "#050505", "header_text_color": "#aaaaaa", "header_link_active_color": "#ffffff", "header_max_width": "1000", "logo_p1_color": "#ffffff", "logo_p2_color": "#d00000", "header_border_bottom": "1px solid var(--border)", "header_layout": "standard", "header_icon_pos": "left", "header_link_hover_color": "#3e0a0a", "header_highlight_color": "#02ed12", "header_highlight_hover": "#bf1d1d", "hero_bg_style": "gradient", "hero_bg_solid": "#ffffff", "hero_gradient_start": "#1c0202", "hero_gradient_end": "#000000", "hero_bg_image_url": "", "hero_bg_image_overlay_opacity": "0.5", "hero_h1_color": "#ffffff", "hero_intro_color": "#999999", "hero_pill_bg": "#111111", "hero_pill_text": "#cccccc", "hero_pill_hover_bg": "#2a0a0a", "hero_pill_hover_text": "#ffffff", "hero_border_bottom": "", "hero_layout_mode": "full", "hero_content_align": "center", "hero_menu_visible": "flex", "hero_box_width": "1100", "hero_featured_match": true, "hero_box_border_width": "4", "hero_box_border_color": "#acf410", "hero_border_top": true, "hero_border_bottom_box": false, "hero_border_left": true, "hero_border_right": true, "button_border_radius": "21", "hero_pill_radius": "8", "hero_main_border_width": "5", "hero_main_border_color": "#4416e9", "hero_main_border_pos": "full", "text_sys_status": "System Status: Online", "sec_border_live_width": "3", "sec_border_live_color": "#e70856", "sec_border_upcoming_width": "4", "sec_border_upcoming_color": "#1152a7", "sec_border_wildcard_width": "1", "sec_border_wildcard_color": "#334155", "sec_border_leagues_width": "6", "sec_border_leagues_color": "#aae114", "sec_border_grouped_width": "3", "sec_border_grouped_color": "#00b37d", "match_row_bg": "#121212", "match_row_border": "#222222", "match_row_team_name_color": "#ffffff", "match_row_time_main_color": "#888888", "match_row_live_border_left": "3px solid var(--brand-primary)", "match_row_live_bg_start": "#1a0505", "match_row_live_bg_end": "#141414", "match_row_live_text_color": "#d00000", "row_height_mode": "standard", "match_row_btn_watch_bg": "#d00000", "match_row_btn_watch_text": "#ffffff", "footer_bg_start": "#0e0e0e", "footer_bg_end": "#050505", "footer_desc_color": "#64748b", "footer_link_color": "#94a3b8", "footer_text_align_desktop": "left", "footer_grid_columns_desktop": "2fr 1fr", "wildcard_category": "", "text_live_section_title": "Air On Now", "text_wildcard_title": "Section title test Single league", "text_top_upcoming_title": "Top 5 section title test", "text_show_more": "View more", "text_section_link": "Show More", "text_watch_btn": "Streams", "text_hd_badge": "SD", "text_section_prefix": "Hey", "match_row_hover_bg": "#1a1a1a", "match_row_hover_border": "#444444", "section_logo_size": "30", "show_more_btn_bg": "#151515", "show_more_btn_border": "#000000", "show_more_btn_text": "#cccccc", "show_more_btn_radius": "", "social_desktop_top": "", "social_desktop_left": "", "social_desktop_scale": "", "mobile_footer_height": "", "mobile_footer_bg": "#000000", "back_to_top_bg": "#d00000", "back_to_top_icon_color": "#ffffff", "back_to_top_radius": "", "back_to_top_size": "", "display_hero": "block", "social_telegram_color": "#a2ba2c", "social_whatsapp_color": "#dadd08", "social_reddit_color": "#9bd719", "social_twitter_color": "#8ed50b", "sec_border_league_upcoming_width": "4", "sec_border_league_upcoming_color": "#dfe30d", "article_bg": "#0a0a0a", "article_text": "#e5e0e0", "article_line_height": "", "article_bullet_color": "#e907a1", "article_link_color": "#df0c0c", "article_h2_color": "#0400f0", "article_h2_border_width": "3", "article_h2_border_color": "#05c0e6", "article_h3_color": "#4ff906", "article_h4_color": "#df2707", "league_card_bg": "#bb1b1b", "league_card_text": "#e1dbdb", "league_card_border_color": "#11494a", "league_card_border_width": "3", "league_card_radius": "18", "league_card_hover_bg": "#347ba8", "league_card_hover_text": "#222020", "league_card_hover_border_color": "#ad0b0b", "static_h1_color": "#000000", "static_h1_border_width": "1", "static_h1_border_color": "#000000", "sys_status_visible": false, "sys_status_text_color": "#039900", "sys_status_bg_color": "#4ffa05", "sys_status_border_color": "#01fe12", "sys_status_border_width": "", "sys_status_radius": "", "sys_status_dot_color": "#00c73c", "sys_status_dot_size": "10", "static_h1_align": "left", "footer_columns": "3", "footer_show_disclaimer": false, "footer_slot_1": "brand", "footer_slot_2": "disclaimer", "footer_slot_3": "menu", "sys_status_bg_opacity": "0.15", "sys_status_bg_transparent": false, "watch_sidebar_swap": false, "watch_show_ad1": false, "watch_show_discord": false, "watch_show_ad2": false, "watch_discord_order": "top", "watch_discord_title": "", "watch_discord_btn_text": "", "chat_header_title": "", "chat_header_bg": "#000000", "chat_header_text": "#000000", "chat_dot_color": "#000000", "chat_dot_size": "", "chat_overlay_bg": "#000000", "chat_overlay_opacity": "0.5", "chat_input_bg": "#000000", "chat_input_text": "#000000", "chat_join_btn_text": "", "watch_table_head_bg": "#000000", "watch_table_body_bg": "#000000", "watch_table_border": "#000000", "watch_table_radius": "", "watch_team_color": "#000000", "watch_vs_color": "#000000", "watch_team_size": "", "watch_vs_size": "", "watch_btn_bg": "#000000", "watch_btn_text": "#000000", "watch_btn_disabled_bg": "#000000", "watch_btn_disabled_text": "#000000", "watch_btn_label": "", "watch_btn_disabled_label": "", "watch_info_btn_bg": "#000000", "watch_info_btn_hover": "#000000", "watch_info_btn_text": "#000000", "watch_info_btn_label": "", "watch_server_active_bg": "#000000", "watch_server_text": "#000000"}; 
 
         // NAME FIXES DICTIONARY (From Testing Index)
         const NAME_FIXES = {
@@ -1176,15 +1176,15 @@
             renderLiveSection(liveMatches);
 
             if (isWildcardActive && wildcardMatches.length > 0) {
-                 let wcTitle = "";
-                 if (!wcTitle) wcTitle = ` ${WILDCARD_CATEGORY}`.trim();
+                 let wcTitle = "Section title test Single league";
+                 if (!wcTitle) wcTitle = `Hey ${WILDCARD_CATEGORY}`.trim();
                  const wcContainer = document.getElementById('wildcard-container');
                  wcContainer.innerHTML = '';
                  createSection(wcContainer, wcTitle, wildcardMatches, false, false, null, WILDCARD_CATEGORY, true);
             } else if (!isWildcardActive) {
                 const topContainer = document.getElementById('top-upcoming-container');
                 if(top5Matches.length > 0) {
-                    const topTitle = "" || "Top Matches in Next 24h";
+                    const topTitle = "Top 5 section title test" || "Top Matches in Next 24h";
                     createSection(topContainer, topTitle, top5Matches, false, false, "🔥", null, true);
                 } else {
                     topContainer.innerHTML = '<div style="padding:15px;color:var(--text-muted);text-align:center;">No upcoming matches in next 24h.</div>';
@@ -1316,7 +1316,7 @@
                 hiddenList.appendChild(fragHidden);
                 
                 btn.style.display = 'block'; 
-                btn.innerText = ` (${displayMatches.length - 5}) ▼`;
+                btn.innerText = `View more (${displayMatches.length - 5}) ▼`;
                 btn.onclick = () => { hiddenList.style.display='block'; btn.style.display='none'; };
             }
         }
@@ -1329,7 +1329,7 @@
             
             let linkHtml = '';
             if (!skipPrefix && PRIORITIES[title] && PRIORITIES[title].hasLink) {
-                linkHtml = `<a href="/${normalizeKey(title)}-streams/" class="sec-right-link"> ></a>`;
+                linkHtml = `<a href="/${normalizeKey(title)}-streams/" class="sec-right-link">Show More ></a>`;
             }
 
             let iconHtml = customIcon ? `<span style="font-size:1.2rem; margin-right:8px;">${customIcon}</span>` : '';
@@ -1340,7 +1340,7 @@
             }
 
             let displayTitle = title;
-            const prefix = "".trim();
+            const prefix = "Hey".trim();
             if (!skipPrefix && prefix) displayTitle = `${prefix} ${title}`;
 
             section.innerHTML = `<div class="sec-head"><h2 class="sec-title">${iconHtml} ${displayTitle}</h2>${linkHtml}</div>`;
@@ -1409,10 +1409,10 @@
 
             if (m.is_live) {
                 const liveLink = `${SITE_DOMAIN}/watch/?${PARAM_LIVE}=${m.id}`;
-                actionHtml = `<button onclick="window.location.href='${liveLink}'" class="btn-watch" title="Watch ${m.displayHome}"> <span class="hd-badge"></span></button>`;
+                actionHtml = `<button onclick="window.location.href='${liveLink}'" class="btn-watch" title="Watch ${m.displayHome}">Streams <span class="hd-badge">SD</span></button>`;
 } else {
                 const start = m.startTimeUnix || Date.now();
-                if ((start - Date.now()) / 60000 <= 30) actionHtml = `<button onclick="openMatch('${m.id}', 'info')" class="btn-watch"> <span class="hd-badge"></span></button>` + copyBtn;
+                if ((start - Date.now()) / 60000 <= 30) actionHtml = `<button onclick="openMatch('${m.id}', 'info')" class="btn-watch">Streams <span class="hd-badge">SD</span></button>` + copyBtn;
                 else actionHtml = `<button onclick="setNotify(this)" class="btn-notify">🔔 Notify</button>` + copyBtn;
             }
             
