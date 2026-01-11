@@ -23,6 +23,9 @@ const REPO_FILES = {
 // Current loaded data
 let currentConfig = null;
 let currentLeagueMap = {};
+// Legacy compatibility
+var configData = null;
+
 
 // ====================
 // LOGIN & AUTHENTICATION
@@ -371,6 +374,9 @@ async function loadConfigFromGitHub() {
             console.warn('Config was null, resetting to default');
             currentConfig = JSON.parse(JSON.stringify(DEMO_CONFIG));
         }
+
+        // Sync configData for legacy functions
+        configData = currentConfig;
 
         if (!currentConfig.pages) currentConfig.pages = DEMO_CONFIG.pages;
         if (!currentConfig.sport_priorities) currentConfig.sport_priorities = JSON.parse(JSON.stringify(DEFAULT_PRIORITIES));
@@ -1301,14 +1307,6 @@ function applyThemeState(data) {
         if (el && display) display.innerText = el.value + 'px';
     });
 }
-// Alias configData to currentConfig for compatibility
-var configData = currentConfig;
-// Update configData ref when currentConfig changes happens in loadConfigFromGitHub
-// so we should change legacy funcs to use currentConfig OR keep var reference
-// simpler to just replace configData with currentConfig in legacy code?
-// I will just add:
-var configData = currentConfig;
-
 // ====================
 // INITIALIZATION
 // ====================
