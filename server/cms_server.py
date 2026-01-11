@@ -99,8 +99,8 @@ class CMSServer(http.server.SimpleHTTPRequestHandler):
                 commit_result = subprocess.run([git_cmd, 'commit', '-m', 'CMS Update: Content Sync'], 
                                               cwd=DIRECTORY, check=False, capture_output=True, text=True)
             
-            # 4. Push
-            result = subprocess.run([git_cmd, 'push', 'origin', 'main'], 
+            # 4. Push (Force push to ensure local version overrides remote)
+            result = subprocess.run([git_cmd, 'push', '--force', 'origin', 'main'], 
                                    cwd=DIRECTORY, capture_output=True, text=True)
             
             if result.returncode == 0:
