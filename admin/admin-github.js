@@ -923,8 +923,28 @@ function switchTab(tabName) {
         selectedTab.classList.add('active');
     }
 
-    // Highlight active nav button
-    event.target.classList.add('active');
+    // Highlight active nav button - find the button that calls this tab
+    const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(btn =>
+        btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${tabName}'`)
+    );
+    if (activeBtn) activeBtn.classList.add('active');
+
+    // Call appropriate render functions when switching tabs
+    if (tabName === 'theme' && typeof renderThemeSettings === 'function') {
+        renderThemeSettings();
+    } else if (tabName === 'priorities' && typeof renderPriorities === 'function') {
+        renderPriorities();
+    } else if (tabName === 'pages' && typeof renderPageList === 'function') {
+        renderPageList();
+    } else if (tabName === 'social') {
+        // Populate social fields
+        const social = currentConfig.social_sharing || {};
+        setVal('socialTelegram', social.counts?.telegram || 0);
+        setVal('socialWhatsapp', social.counts?.whatsapp || 0);
+        setVal('socialReddit', social.counts?.reddit || 0);
+        setVal('socialTwitter', social.counts?.twitter || 0);
+        setVal('socialExcluded', social.excluded_pages || '');
+    }
 }
 
 function showStatus(message, type = 'info') {

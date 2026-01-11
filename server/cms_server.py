@@ -83,9 +83,9 @@ class CMSServer(http.server.SimpleHTTPRequestHandler):
                 subprocess.run([git_cmd, 'rm', '-r', '--cached', folder], 
                               cwd=DIRECTORY, check=False, capture_output=True, text=True)
             
-            # 1. Pull latest changes from remote (Merge strategy to preserve remote files)
+            # 1. Pull latest changes from remote (Rebase strategy to avoid merge commits)
             # We use --allow-unrelated-histories to handle cases where local init differs from remote init
-            pull_result = subprocess.run([git_cmd, 'pull', 'origin', 'main', '--allow-unrelated-histories', '--no-rebase'], 
+            pull_result = subprocess.run([git_cmd, 'pull', 'origin', 'main', '--allow-unrelated-histories', '--rebase'], 
                                         cwd=DIRECTORY, capture_output=True, text=True)
             
             # 2. Add ONLY website files (.gitignore excludes CMS folders usually, but we forced removal above too)
