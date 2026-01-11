@@ -224,7 +224,7 @@ const DEFAULT_PRIORITIES = {
         "MLS": { score: 87, isLeague: true, hasLink: true, isHidden: false },
         "Africa Cup of Nations": { score: 86, isLeague: true, hasLink: true, isHidden: false },
         "La Liga": { score: 85, isLeague: true, hasLink: true, isHidden: false },
-        "Liga MX": { score: 84, isLeague: true, hasLink: false, isHidden: false },
+        "Liga MX": { score: 84, isLeague: true, hasLink: true, isHidden: false },
         "Football": { score: 79, isLeague: false, hasLink: false, isHidden: false },
         "Basketball": { score: 78, isLeague: false, hasLink: false, isHidden: false },
         "Baseball": { score: 77, isLeague: false, hasLink: false, isHidden: false },
@@ -281,7 +281,6 @@ const DEMO_CONFIG = {
 };
 
 const THEME_FIELDS = {
-    // 1. Typography & Base
     'font_family_base': 'themeFontBase',
     'font_family_headings': 'themeFontHeadings',
     'border_radius_base': 'themeBorderRadius',
@@ -290,10 +289,9 @@ const THEME_FIELDS = {
     'static_h1_align': 'pageH1Align',
     'static_h1_border_width': 'themeStaticH1BorderWidth',
     'static_h1_border_color': 'themeStaticH1BorderColor',
-
     'sys_status_visible': 'themeSysStatusVisible',
     'sys_status_bg_opacity': 'themeSysStatusBgOpacity',
-    'sys_status_bg_transparent': 'themeSysStatusBgTransparent', // Check valid field
+    'sys_status_bg_transparent': 'themeSysStatusBgTransparent',
     'sys_status_text_color': 'themeSysStatusText',
     'sys_status_bg_color': 'themeSysStatusBg',
     'sys_status_border_color': 'themeSysStatusBorderColor',
@@ -301,18 +299,14 @@ const THEME_FIELDS = {
     'sys_status_radius': 'themeSysStatusRadius',
     'sys_status_dot_color': 'themeSysStatusDotColor',
     'sys_status_dot_size': 'themeSysStatusDotSize',
-    // FOOTER LEAGUE CARDS
     'league_card_bg': 'themeLeagueCardBg',
     'league_card_text': 'themeLeagueCardText',
     'league_card_border_color': 'themeLeagueCardBorder',
     'league_card_border_width': 'themeLeagueCardBorderWidth',
     'league_card_radius': 'themeLeagueCardRadius',
-
     'league_card_hover_bg': 'themeLeagueCardHoverBg',
     'league_card_hover_text': 'themeLeagueCardHoverText',
     'league_card_hover_border_color': 'themeLeagueCardHoverBorder',
-
-    // 2. Palette
     'brand_primary': 'themeBrandPrimary',
     'brand_dark': 'themeBrandDark',
     'accent_gold': 'themeAccentGold',
@@ -323,8 +317,6 @@ const THEME_FIELDS = {
     'text_muted': 'themeTextMuted',
     'border_color': 'themeBorderColor',
     'scrollbar_thumb_color': 'themeScrollThumb',
-
-    // 3. Header
     'header_bg': 'themeHeaderBg',
     'header_text_color': 'themeHeaderText',
     'header_link_active_color': 'themeHeaderActive',
@@ -337,8 +329,6 @@ const THEME_FIELDS = {
     'header_link_hover_color': 'themeHeaderHover',
     'header_highlight_color': 'themeHeaderHighlightColor',
     'header_highlight_hover': 'themeHeaderHighlightHover',
-
-    // 4. Hero
     'hero_bg_style': 'themeHeroBgStyle',
     'hero_bg_solid': 'themeHeroBgSolid',
     'hero_gradient_start': 'themeHeroGradStart',
@@ -355,10 +345,7 @@ const THEME_FIELDS = {
     'hero_layout_mode': 'themeHeroLayoutMode',
     'hero_content_align': 'themeHeroAlign',
     'hero_menu_visible': 'themeHeroMenuVisible',
-
     'hero_box_width': 'themeHeroBoxWidth',
-
-    // Box Borders (Inner)
     'hero_box_border_width': 'themeHeroBoxBorderWidth',
     'hero_box_border_color': 'themeHeroBoxBorderColor',
     'hero_border_top': 'themeHeroBorderTop',
@@ -367,46 +354,32 @@ const THEME_FIELDS = {
     'hero_border_right': 'themeHeroBorderRight',
     'button_border_radius': 'themeBtnRadius',
     'hero_pill_radius': 'themeHeroPillRadius',
-
-    // Main Section Border (Outer/Full)
     'hero_main_border_width': 'themeHeroMainBorderWidth',
     'hero_main_border_color': 'themeHeroMainBorderColor',
     'hero_main_border_pos': 'themeHeroMainBorderPos',
     'text_sys_status': 'themeTextSysStatus',
-
-    // Section Borders (Width & Color)
     'sec_border_live_width': 'themeLiveBorderWidth',
     'sec_border_live_color': 'themeLiveBorderColor',
-
     'sec_border_upcoming_width': 'themeUpcomingBorderWidth',
     'sec_border_upcoming_color': 'themeUpcomingBorderColor',
-
     'sec_border_wildcard_width': 'themeWildcardBorderWidth',
     'sec_border_wildcard_color': 'themeWildcardBorderColor',
-
     'sec_border_leagues_width': 'themeLeaguesBorderWidth',
     'sec_border_leagues_color': 'themeLeaguesBorderColor',
     'sec_border_grouped_width': 'themeGroupedBorderWidth',
     'sec_border_grouped_color': 'themeGroupedBorderColor',
-    // New: League Page Upcoming Border
     'sec_border_league_upcoming_width': 'themeLeagueUpcomingBorderWidth',
     'sec_border_league_upcoming_color': 'themeLeagueUpcomingBorderColor',
-
-    // New: Article Styling
     'article_bg': 'themeArticleBg',
     'article_text': 'themeArticleText',
     'article_line_height': 'themeArticleLineHeight',
     'article_bullet_color': 'themeArticleBullet',
     'article_link_color': 'themeArticleLink',
-
     'article_h2_color': 'themeArticleH2Color',
     'article_h2_border_width': 'themeArticleH2BorderWidth',
     'article_h2_border_color': 'themeArticleH2BorderColor',
-
     'article_h3_color': 'themeArticleH3Color',
     'article_h4_color': 'themeArticleH4Color',
-
-    // 5. Match Rows
     'match_row_bg': 'themeMatchRowBg',
     'match_row_border': 'themeMatchRowBorder',
     'match_row_team_name_color': 'themeMatchTeamColor',
@@ -418,26 +391,17 @@ const THEME_FIELDS = {
     'row_height_mode': 'themeRowHeight',
     'match_row_btn_watch_bg': 'themeBtnWatchBg',
     'match_row_btn_watch_text': 'themeBtnWatchText',
-
-    // 6. Footer
     'footer_bg_start': 'themeFooterBgStart',
     'footer_bg_end': 'themeFooterBgEnd',
     'footer_desc_color': 'themeFooterText',
     'footer_link_color': 'themeFooterLink',
     'footer_text_align_desktop': 'themeFooterAlign',
-
-    // NEW LAYOUT FIELDS
     'footer_columns': 'themeFooterCols',
     'footer_show_disclaimer': 'themeFooterShowDisclaimer',
     'footer_slot_1': 'themeFooterSlot1',
     'footer_slot_2': 'themeFooterSlot2',
     'footer_slot_3': 'themeFooterSlot3',
-
-    // --- NEW EXTENDED FIELDS ---
-    // Wildcard
     'wildcard_category': 'themeWildcardCat',
-
-    // Labels & Text
     'text_live_section_title': 'themeTextLiveTitle',
     'text_wildcard_title': 'themeTextWildcardTitle',
     'text_top_upcoming_title': 'themeTextTopUpcoming',
@@ -446,8 +410,6 @@ const THEME_FIELDS = {
     'text_watch_btn': 'themeTextWatch',
     'text_hd_badge': 'themeTextHd',
     'text_section_prefix': 'themeTextSectionPrefix',
-
-    // Hover & Styles
     'match_row_hover_bg': 'themeMatchRowHoverBg',
     'match_row_hover_border': 'themeMatchRowHoverBorder',
     'section_logo_size': 'themeSectionLogoSize',
@@ -455,8 +417,6 @@ const THEME_FIELDS = {
     'show_more_btn_border': 'themeShowMoreBorder',
     'show_more_btn_text': 'themeShowMoreText',
     'show_more_btn_radius': 'themeShowMoreRadius',
-
-    // Sticky Share
     'social_desktop_top': 'themeSocialDeskTop',
     'social_desktop_left': 'themeSocialDeskLeft',
     'social_desktop_scale': 'themeSocialDeskScale',
@@ -466,16 +426,11 @@ const THEME_FIELDS = {
     'social_reddit_color': 'themeSocialReddit',
     'social_twitter_color': 'themeSocialTwitter',
     'mobile_footer_bg': 'themeMobFootBg',
-
-    // Back to Top
     'back_to_top_bg': 'themeBttBg',
     'back_to_top_icon_color': 'themeBttIcon',
     'back_to_top_radius': 'themeBttRadius',
     'back_to_top_size': 'themeBttSize',
-
-    // Logic Toggles
     'display_hero': 'themeDisplayHero',
-    // --- WATCH PAGE SPECIFIC ---
     'watch_sidebar_swap': 'themeWatchSidebarSwap',
     'watch_show_ad1': 'themeWatchShowAd1',
     'watch_show_discord': 'themeWatchShowDiscord',
@@ -483,7 +438,6 @@ const THEME_FIELDS = {
     'watch_discord_order': 'themeWatchDiscordOrder',
     'watch_discord_title': 'themeWatchDiscordTitle',
     'watch_discord_btn_text': 'themeWatchDiscordBtnText',
-
     'chat_header_title': 'themeWatchChatHeaderTitle',
     'chat_header_bg': 'themeWatchChatHeaderBg',
     'chat_header_text': 'themeWatchChatHeaderText',
@@ -494,7 +448,6 @@ const THEME_FIELDS = {
     'chat_input_bg': 'themeWatchChatInputBg',
     'chat_input_text': 'themeWatchChatInputText',
     'chat_join_btn_text': 'themeWatchChatJoinBtnText',
-
     'watch_table_head_bg': 'themeWatchTableHeadBg',
     'watch_table_body_bg': 'themeWatchTableBodyBg',
     'watch_table_border': 'themeWatchTableBorder',
@@ -503,14 +456,12 @@ const THEME_FIELDS = {
     'watch_vs_color': 'themeWatchVsColor',
     'watch_team_size': 'themeWatchTeamSize',
     'watch_vs_size': 'themeWatchVsSize',
-
     'watch_btn_bg': 'themeWatchBtnBg',
     'watch_btn_text': 'themeWatchBtnText',
     'watch_btn_disabled_bg': 'themeWatchBtnDisabledBg',
     'watch_btn_disabled_text': 'themeWatchBtnDisabledText',
     'watch_btn_label': 'themeWatchBtnLabel',
     'watch_btn_disabled_label': 'themeWatchBtnDisabledLabel',
-
     'watch_info_btn_bg': 'themeWatchInfoBtnBg',
     'watch_info_btn_hover': 'themeWatchInfoBtnHover',
     'watch_info_btn_text': 'themeWatchInfoBtnText',
@@ -518,11 +469,6 @@ const THEME_FIELDS = {
     'watch_server_active_bg': 'themeWatchServerActiveBg',
     'watch_server_text': 'themeWatchServerText'
 };
-
-
-
-
-
 // ====================
 // GITHUB API FUNCTIONS
 // ====================
