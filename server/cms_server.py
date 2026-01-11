@@ -67,46 +67,46 @@ class CMSServer(http.server.SimpleHTTPRequestHandler):
 
     def handle_deploy(self):
         """
-        Commits and Pushes changes to GitHub.
-        COMPLETELY REPLACES repository with only website files.
+        Commits and Pushes changes to GitHub SAFELY.
+        1. Pulls remote changes first (to preserve CNAME, README, etc.)
+        2. Adds local changes
+        3. Commits and Pushes
         """
         try:
             git_cmd = find_git()
             if not git_cmd:
                 raise Exception("Git is not installed. Please install Git first.")
             
-            # 0. CRITICAL: Remove CMS files from git tracking
-            cms_folders = ['admin', 'server', 'core', '_debug', 'Start_CMS.bat']
+            # 0. CRITICAL: Remove CMS backend folders from git tracking (ensure they stay local)
+            cms_folders = ['admin', 'server', 'core', '_debug', 'Start_CMS.bat', 'Start_Admin.bat', 'cron_setup.md', 'cron_api_guide.md', 'walkthrough.md', 'implementation_plan.md', 'task.md']
             for folder in cms_folders:
                 subprocess.run([git_cmd, 'rm', '-r', '--cached', folder], 
                               cwd=DIRECTORY, check=False, capture_output=True, text=True)
             
-            # 1. Add ONLY website files (.gitignore excludes CMS folders)
+            # 1. Pull latest changes from remote (Merge strategy to preserve remote files)
+            # We use --allow-unrelated-histories to handle cases where local init differs from remote init
+            pull_result = subprocess.run([git_cmd, 'pull', 'origin', 'main', '--allow-unrelated-histories', '--no-rebase'], 
+                                        cwd=DIRECTORY, capture_output=True, text=True)
+            
+            # 2. Add ONLY website files (.gitignore excludes CMS folders usually, but we forced removal above too)
             subprocess.run([git_cmd, 'add', '.'], cwd=DIRECTORY, check=True, capture_output=True, text=True)
             
-            # 2. Commit
-            commit_result = subprocess.run([git_cmd, 'commit', '-m', 'CMS Update: Website files only'], 
-                                          cwd=DIRECTORY, check=False, capture_output=True, text=True)
+            # 3. Commit
+            # Check if there are changes to commit to avoid empty commit errors
+            status = subprocess.run([git_cmd, 'status', '--porcelain'], cwd=DIRECTORY, capture_output=True, text=True)
             
-            # 3. Delete remote branch to ensure complete cleanup of old files
-            # This is the KEY step - it removes ALL old files from GitHub
-            delete_result = subprocess.run([git_cmd, 'push', 'origin', '--delete', 'main'], 
-                                          cwd=DIRECTORY, capture_output=True, text=True, check=False)
+            if status.stdout.strip():
+                commit_result = subprocess.run([git_cmd, 'commit', '-m', 'CMS Update: Content Sync'], 
+                                              cwd=DIRECTORY, check=False, capture_output=True, text=True)
             
-            # 4. Push fresh branch (this creates a brand new clean repository)
-            result = subprocess.run([git_cmd, 'push', '--set-upstream', 'origin', 'main'], 
+            # 4. Push
+            result = subprocess.run([git_cmd, 'push', 'origin', 'main'], 
                                    cwd=DIRECTORY, capture_output=True, text=True)
             
             if result.returncode == 0:
-                self.send_json_response({'status': 'success', 'message': '✅ Repository completely replaced! Only website files remain.'})
+                self.send_json_response({'status': 'success', 'message': '✅ Site updated successfully! Remote files preserved.'})
             else:
-                # If deletion failed (maybe branch didn't exist), try force push
-                result = subprocess.run([git_cmd, 'push', '--set-upstream', 'origin', 'main', '--force'], 
-                                       cwd=DIRECTORY, capture_output=True, text=True)
-                if result.returncode == 0:
-                    self.send_json_response({'status': 'success', 'message': '✅ Website files uploaded! Old files removed.'})
-                else:
-                    self.send_json_response({'status': 'error', 'message': f"Push Failed: {result.stderr}"}, 500)
+                self.send_json_response({'status': 'error', 'message': f"Push Failed: {result.stderr}"}, 500)
                 
         except Exception as e:
             self.send_json_response({'status': 'error', 'message': str(e)}, 500)

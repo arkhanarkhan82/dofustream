@@ -123,7 +123,6 @@ function loadCronSettings() {
     const auto = currentConfig.automation;
     setValue('cronApiKey', auto.api_key);
     setValue('cronJobId', auto.job_id);
-    setValue('cronInterval', auto.interval || "10");
 }
 
 async function saveCronSettings() {
@@ -131,7 +130,6 @@ async function saveCronSettings() {
 
     const apiKey = getValue('cronApiKey');
     const jobId = getValue('cronJobId');
-    const interval = getValue('cronInterval');
 
     if (!apiKey || !jobId) {
         showStatus('Please enter both API Key and Job ID', 'error');
@@ -141,56 +139,18 @@ async function saveCronSettings() {
     // Save to Config
     currentConfig.automation = {
         api_key: apiKey,
-        job_id: jobId,
-        interval: interval
+        job_id: jobId
     };
 
-    // Try to Sync
-    showStatus('Saving and syncing with Cron-Job.org...', 'info');
-    const success = await syncWithCronJobOrg(apiKey, jobId, interval);
-
-    if (success) {
-        await saveConfigToGitHub(); // Save config persistence
-        showStatus('Automation settings saved and schedule updated!', 'success');
-    } else {
-        showStatus('Settings saved locally, but failed to sync with Cron-Job.org. Check API Key.', 'warning');
-        await saveConfigToGitHub();
-    }
-}
-
-async function syncWithCronJobOrg(apiKey, jobId, interval) {
-    const url = `https://api.cron-job.org/jobs/${jobId}`;
-
-    // Calculate Schedule
-    // Cron-Job.org uses minutes. "Every X minutes"
-    // We need to fetch the existing job to preserve its URL, or user needs to set it properly first.
-    // For this implementation, we will ONLY update the schedule.
-
+    // Save config persistence (Local & GitHub)
+    showStatus('Saving credentials...', 'loading');
     try {
-        const response = await fetch(url, {
-            method: 'PATCH', // or PUT depending on their API version, usually PATCH for partial
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
-            },
-            body: JSON.stringify({
-                job: {
-                    schedule: {
-                        minutes: [`*/${interval}`] // Simple "Every N minutes" syntax
-                    }
-                }
-            })
-        });
-
-        if (response.ok) {
-            return true;
-        } else {
-            console.error('Cron Update Failed:', await response.text());
-            return false;
-        }
+        await updateGitHubFile(REPO_FILES.CONFIG, JSON.stringify(currentConfig, null, 2), 'Update automation credentials', currentConfigSHA);
+        await loadConfigFromGitHub(); // Refresh SHA
+        showStatus('Automation credentials saved!', 'success');
+        testCronConnection(); // Auto-test after save
     } catch (e) {
-        console.error('Cron Network Error:', e);
-        return false;
+        showStatus('Error saving: ' + e.message, 'error');
     }
 }
 
@@ -656,6 +616,11 @@ function buildConfigFromUI() {
         league: getValue('tplLeagueArticle'), sport: getValue('tplSportArticle'), excluded: getValue('tplExcludePages'),
         league_h1: getValue('tplLeagueH1'), league_intro: getValue('tplLeagueIntro'),
         league_live_title: getValue('tplLeagueLiveTitle'), league_upcoming_title: getValue('tplLeagueUpcomingTitle')
+    };
+
+    config.automation = {
+        api_key: getValue('cronApiKey'),
+        job_id: getValue('cronJobId')
     };
 
     return config;
