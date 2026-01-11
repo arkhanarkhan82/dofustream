@@ -630,12 +630,13 @@ function populateAllFields() {
     setVal('paramInfo', s.param_info);
 
     // Legacy mapping
-    if (typeof injectMissingThemeUI === 'function') injectMissingThemeUI();
-    if (typeof renderThemeSettings === 'function') renderThemeSettings();
-    if (typeof renderPriorities === 'function') renderPriorities();
-    if (typeof renderMenus === 'function') renderMenus();
-    if (typeof renderPageList === 'function') renderPageList();
-    if (typeof renderLeagues === 'function') renderLeagues();
+    // Legacy mapping with Error Handling
+    try { if (typeof injectMissingThemeUI === 'function') injectMissingThemeUI(); } catch (e) { console.error('injectMissingThemeUI Error', e); }
+    try { if (typeof renderThemeSettings === 'function') renderThemeSettings(); } catch (e) { console.error('renderThemeSettings Error', e); }
+    try { if (typeof renderPriorities === 'function') renderPriorities(); } catch (e) { console.error('renderPriorities Error', e); }
+    try { if (typeof renderMenus === 'function') renderMenus(); } catch (e) { console.error('renderMenus Error', e); }
+    try { if (typeof renderPageList === 'function') renderPageList(); } catch (e) { console.error('renderPageList Error', e); }
+    try { if (typeof renderLeagues === 'function') renderLeagues(); } catch (e) { console.error('renderLeagues Error', e); }
 
     // Watch
     const w = currentConfig.watch_settings || {};
@@ -1116,123 +1117,8 @@ function showStatus(message, type = 'info') {
 // ==========================================
 // 5. THEME DESIGNER FUNCTIONS (UPDATED)
 // ==========================================
-function injectMissingThemeUI() {
-    const themeTab = document.getElementById('tab-theme');
-    if (!themeTab) return;
+// Duplicate injectMissingThemeUI removed
 
-    // Clean up old injections
-    const existingInput = document.getElementById('themeWildcardCat');
-    if (existingInput) {
-        const container = existingInput.closest('.grid-3');
-        if (container) container.remove();
-    }
-
-    const newSection = document.createElement('div');
-    newSection.className = 'grid-3';
-    newSection.innerHTML = `
-        <!-- CARD 1: CONTENT & LOGIC -->
-        <div class="card">
-            <h3>⚡ Content & Logic</h3>
-            <div class="range-wrapper" style="margin-bottom:15px; border-bottom:1px solid #333; padding-bottom:10px;">
-                <label style="color:#facc15;">🔥 Wildcard Category</label>
-                <input type="text" id="themeWildcardCat" placeholder="e.g. NFL, Premier League">
-            </div>
-
-            <h4 style="margin:15px 0 5px 0; font-size:0.8rem; color:#aaa;">Titles</h4>
-            <div class="grid-2" style="gap:10px;">
-                <div style="grid-column: span 2;"><input type="text" id="themeTextWildcardTitle" placeholder="Wildcard Title"></div>
-                <div style="grid-column: span 2;"><input type="text" id="themeTextTopUpcoming" placeholder="Top 5 Title"></div>
-                <div><label>Status Text</label><input type="text" id="themeTextSysStatus" placeholder="System Status: Online"></div>
-                <div><label>Live</label><input type="text" id="themeTextLiveTitle"></div>
-                <div><label>Show More</label><input type="text" id="themeTextShowMore"></div>
-                <div><label>Btn</label><input type="text" id="themeTextWatch"></div>
-                <div><label>Badge</label><input type="text" id="themeTextHd"></div>
-                <div><label>Link</label><input type="text" id="themeTextSectionLink"></div>
-                <div><label>Prefix</label><input type="text" id="themeTextSectionPrefix"></div>
-            </div>
-        </div>
-
-        <!-- CARD 2: STYLING & BORDERS (UPDATED) -->
-        <div class="card">
-            <h3>🎨 Section Borders</h3>
-            <p style="font-size:0.75rem; color:#aaa; margin-bottom:15px;">Customize bottom borders for specific sections.</p>
-
-            <!-- Live -->
-            <label>Trending Live</label>
-            <div class="input-group">
-                <input type="number" id="themeLiveBorderWidth" placeholder="Width (px)" value="1">
-                <input type="color" id="themeLiveBorderColor" value="#334155">
-            </div>
-
-            <!-- Upcoming -->
-            <label>Top 5 Upcoming</label>
-            <div class="input-group">
-                <input type="number" id="themeUpcomingBorderWidth" placeholder="Width (px)" value="1">
-                <input type="color" id="themeUpcomingBorderColor" value="#334155">
-            </div>
-
-            <!-- Wildcard -->
-            <label>Wildcard Section</label>
-            <div class="input-group">
-                <input type="number" id="themeWildcardBorderWidth" placeholder="Width (px)" value="1">
-                <input type="color" id="themeWildcardBorderColor" value="#334155">
-            </div>
-            <!-- Grouped Sports (Main List) -->
-            <label>Grouped Sports/Leagues</label>
-            <div class="input-group">
-                <input type="number" id="themeGroupedBorderWidth" placeholder="Width (px)" value="1">
-                <input type="color" id="themeGroupedBorderColor" value="#334155">
-            </div>
-
-            <!-- Footer Leagues -->
-            <label>Footer Popular Leagues</label>
-            <div class="input-group">
-                <input type="number" id="themeLeaguesBorderWidth" placeholder="Width (px)" value="1">
-                <input type="color" id="themeLeaguesBorderColor" value="#334155">
-            </div>
-            
-            <h4 style="margin:15px 0 5px 0; font-size:0.8rem; color:#aaa;">Buttons</h4>
-            <div class="color-grid">
-                <div><label>Show More BG</label><input type="color" id="themeShowMoreBg"></div>
-                <div><label>Text</label><input type="color" id="themeShowMoreText"></div>
-            </div>
-            <div class="range-wrapper"><label>Radius</label><input type="text" id="themeShowMoreRadius" placeholder="30px"></div>
-        </div>
-
-        <!-- CARD 3: FLOATING ELEMENTS -->
-        <div class="card">
-            <h3>📍 Floating & Extras</h3>
-            <h4 style="margin:5px 0 5px 0; font-size:0.8rem; color:#aaa;">Back to Top</h4>
-            <div class="color-grid">
-                <div><label>BG</label><input type="color" id="themeBttBg"></div>
-                <div><label>Icon</label><input type="color" id="themeBttIcon"></div>
-            </div>
-            
-            <h4 style="margin:10px 0 5px 0; font-size:0.8rem; color:#aaa;">Section Logo Size</h4>
-             <input type="range" id="themeSectionLogoSize" min="0" max="60" step="1">
-
-            <h4 style="margin:10px 0 5px 0; font-size:0.8rem; color:#aaa;">Social Sidebar</h4>
-            <div class="grid-2" style="gap:10px;">
-                <div><label>Top</label><input type="text" id="themeSocialDeskTop"></div>
-                <div><label>Left</label><input type="text" id="themeSocialDeskLeft"></div>
-                <div><label>Scale</label><input type="text" id="themeSocialDeskScale"></div>
-            </div>
-            <h4 style="margin:10px 0 5px 0; font-size:0.8rem; color:#aaa;">Social Colors</h4>
-            <div class="color-grid">
-                <div><label>Telegram</label><input type="color" id="themeSocialTelegram"></div>
-                <div><label>WhatsApp</label><input type="color" id="themeSocialWhatsapp"></div>
-                <div><label>Reddit</label><input type="color" id="themeSocialReddit"></div>
-                <div><label>Twitter</label><input type="color" id="themeSocialTwitter"></div>
-            </div>
-             <h4 style="margin:10px 0 5px 0; font-size:0.8rem; color:#aaa;">Match Hover</h4>
-            <div class="color-grid">
-                <div><label>Hover BG</label><input type="color" id="themeMatchRowHoverBg"></div>
-                <div><label>Hover Border</label><input type="color" id="themeMatchRowHoverBorder"></div>
-            </div>
-        </div>
-    `;
-    themeTab.appendChild(newSection);
-}
 
 function renderThemeSettings() {
     const t = configData.theme || {};
