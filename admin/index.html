@@ -38,6 +38,7 @@
             margin: 0 0 8px 0;
             background: linear-gradient(135deg, #facc15 0%, #f59e0b 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -220,8 +221,9 @@
                 <button class="nav-btn" onclick="switchTab('theme')">🎨 Theme Designer</button>
                 <button class="nav-btn" onclick="switchTab('pages')">📄 Pages & Content</button>
                 <button class="nav-btn" onclick="switchTab('priorities')">📊 Priorities & Boost</button>
-                <button class="nav-btn" onclick="switchTab('leagues')">🏆 Leagues & Teams</button>
-                <button class="nav-btn" onclick="switchTab('menus')">🔗 Menus</button>
+                <button onclick="switchTab('backup')">Backup & Restore</button>
+                <button onclick="switchTab('automation')">Automation</button>
+                <button onclick="handleLogout()" class="btn-danger">Logout</button>
                 <button class="nav-btn" onclick="switchTab('social')">💬 Social Sharing</button>
                 <button class="nav-btn" onclick="switchTab('watch-settings')">📺 Watch Page Config</button>
             </nav>
@@ -345,7 +347,8 @@
                             Page</button>
                     </div>
                     <p class="desc" id="ctxDesc" style="margin-top:10px;">Editing global styles for the
-                        <strong>Homepage</strong>.</p>
+                        <strong>Homepage</strong>.
+                    </p>
                 </div>
                 <hr style="border:0; border-top:1px solid #333; margin: 20px 0;">
                 <!-- === NEW CODE END === -->
@@ -1138,7 +1141,8 @@
                 <div class="card" style="margin-top:40px; border-color:#8b5cf6;">
                     <h3 style="color:#a78bfa;">🤖 Entity Stacking & League Config</h3>
                     <p class="desc">Configuration for generated League/Sport pages (e.g. /nba-streams/).<br>Variables:
-                        <code>{{NAME}}</code> (NBA), <code>{{YEAR}}</code> (2025).</p>
+                        <code>{{NAME}}</code> (NBA), <code>{{YEAR}}</code> (2025).
+                    </p>
 
                     <div class="grid-2">
                         <div

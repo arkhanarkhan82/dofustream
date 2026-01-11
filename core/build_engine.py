@@ -124,7 +124,10 @@ def generate_match_row(match):
     
     # Images (Handling different sources in the dict)
     h_img_obj = match.get('home_team_image', {})
+    if not isinstance(h_img_obj, dict): h_img_obj = {}
+    
     a_img_obj = match.get('away_team_image', {})
+    if not isinstance(a_img_obj, dict): a_img_obj = {}
     
     # Priority: sport-tv-guide (Full URL) > streamed (Likely hash/slug, requires handling)
     h_img = h_img_obj.get('sport-tv-guide') or h_img_obj.get('streamed') or ''
@@ -137,7 +140,8 @@ def generate_match_row(match):
     # Action Button Logic (Hydrated but with static fallback)
     # NOTE: Phase 3 Upgrade - we want a valid link immediately if possible.
     # We will point to the watch page with a query param.
-    link = f"/watch/?streams={mid}"
+    # Defaulting to 'stream' which is standard
+    link = f"/watch/?stream={mid}"
     btn_html = f'<a href="{link}" class="btn-watch">Watch</a>'
 
     html = f'''
@@ -200,52 +204,182 @@ def generate_static_schema(matches, site_domain):
     }
     return json.dumps(schema)
 
+
 # ==========================================
-# 3. MAIN
+# 3. MAIN (Hybrid Update)
 # ==========================================
+def generate_section_html(container_id, title, matches, icon=None):
+    if not matches:
+        return ""
+    
+    # Simple logic to replicate JS createSection
+    # Note: We are generating the inner HTML of the container
+    
+    rows_html = ""
+    for m in matches:
+        rows_html += generate_match_row(m)
+        
+    icon_html = f'<span style="font-size:1.2rem; margin-right:8px;">{icon}</span>' if icon else ""
+    
+    html = f'''
+    <div class="section-box" style="margin-bottom:30px;">
+        <div class="sec-head">
+            <h2 class="sec-title">{icon_html} {title}</h2>
+        </div>
+        <div>{rows_html}</div>
+    </div>
+    '''
+    return html
+
+def log_to_file(msg):
+    try:
+        with open('build_log.txt', 'a', encoding='utf-8') as f:
+            f.write(str(msg) + "\\n")
+    except: pass
+
 def main():
-    print("🚀 Starting Build Engine... [SEO Skeleton Mode]")
-    print(f"📂 CMS Root: {CMS_ROOT}")
+    if os.path.exists('build_log.txt'): os.remove('build_log.txt')
+    log_to_file("🚀 Starting Build Engine... [Hybrid Mode]")
     
     # 1. Load Config 
     config = load_json(CONFIG_PATH)
     if not config:
-        print("⚠️  Warning: proceeding without local config.")
+        log_to_file("⚠️  Warning: proceeding without local config.")
+        config = {}
+
+    log_to_file(f"Config loaded. Type: {type(config)}")
 
     # 2. Fetch API
-    raw_data = fetch_live_data()
+    raw_data = fetch_live_data() 
     if not raw_data:
-        print("❌ Build Failed: No data fetched.")
+        log_to_file("❌ Build Failed: No data fetched.")
         return
 
-    # 3. Organize Data
+    all_matches = []
+    if isinstance(raw_data, list):
+        all_matches = raw_data
+    elif isinstance(raw_data, dict) and 'matches' in raw_data:
+        all_matches = raw_data['matches']
+    
+    log_to_file(f"Raw data processed. Matches found: {len(all_matches)}")
+
+    # 3. Organize Data (Entity Stack)
     entity_stack = organize_entity_stack(raw_data)
     
-    # DEBUG: Dump Raw
-    RAW_DEBUG = os.path.join(CMS_ROOT, '_debug', 'raw_fetch.json')
-    try:
-        os.makedirs(os.path.dirname(RAW_DEBUG), exist_ok=True)
-        with open(RAW_DEBUG, 'w', encoding='utf-8') as f:
-            json.dump(raw_data, f, indent=4)
-        print(f"🐛 Saved raw data to {RAW_DEBUG}")
-    except: pass
-
-    # --- NEW: Load Config for Filtering ---
-    config = load_json(os.path.join(CMS_ROOT, 'data', 'config.json'))
-    target_country = config.get('site_settings', {}).get('target_country', 'US')
-    priorities = config.get('sport_priorities', {}).get(target_country, {})
+    # --- HOMEPAGE LOGIC (Hybrid Injection) ---
+    log_to_file("🏠 Building Homepage Data...")
     
-    # Build Allowed List (Normalized)
-    allowed_leagues = {}
-    for name, data in priorities.items():
-        if isinstance(data, dict) and data.get('hasLink'):
-            # simple normalization to match API keys if possible
-            # We map "Display Name" -> Data
-            allowed_leagues[name.lower()] = data
+    # Separation
+    live_matches = [m for m in all_matches if isinstance(m, dict) and m.get('is_live')]
+    upcoming_matches = [m for m in all_matches if isinstance(m, dict) and not m.get('is_live')]
+    
+    log_to_file(f"📊 Live: {len(live_matches)}, Upcoming: {len(upcoming_matches)}")
+    
+    # HTML Buffers
+    html_live_section = ""
+    html_top_upcoming = ""
+    html_grouped = ""
+    
+    # A. Live Section
+    if live_matches:
+        rows = "".join([generate_match_row(m) for m in live_matches])
+        html_live_section = rows
+    
+    # B. Top 5 Upcoming (Boost Logic)
+    target_country = config.get('site_settings', {}).get('target_country', 'US')
+    sport_priorities = config.get('sport_priorities', {})
+    if isinstance(sport_priorities, list):
+         log_to_file("⚠️ sport_priorities is a LIST, expected DICT. Check config.json format.")
+         sport_priorities = {}
+         
+    priorities = sport_priorities.get(target_country, {})
+    if isinstance(priorities, list):
+         log_to_file(f"⚠️ priorities for {target_country} is a LIST, expected DICT.")
+         priorities = {}
 
-    print(f"📋 Admin Panel Rules: Found {len(allowed_leagues)} enabled leagues for {target_country}")
+    boost_keys = priorities.get('_BOOST', '')
+    if isinstance(boost_keys, str):
+        boost_keys = boost_keys.lower().split(',')
+    else:
+        boost_keys = []
+        
+    boost_keys = [b.strip() for b in boost_keys if b.strip()]
+    
+    # Sort upcoming
+    def sort_score(m):
+        league = m.get('league', '').lower()
+        is_boosted = any(b in league for b in boost_keys)
+        # Primary: Boosted, Secondary: Time
+        return (0 if is_boosted else 1, m.get('startTimeUnix', 9999999999999))
 
-    # 4. Generate HTML Pages
+    upcoming_matches.sort(key=sort_score)
+    
+    top_5 = upcoming_matches[:5]
+    remaining_upcoming = upcoming_matches[5:] # Used for grouped if needed, but grouped is usually categorized
+    
+    if top_5:
+         html_top_upcoming = generate_section_html('top-upcoming-container', "Top Upcoming", top_5, "🔥")
+
+    # C. Grouped Section (The Stack)
+    # We re-use logic from organize_entity_stack but flattened for the homepage listing
+    # Actually, organize_entity_stack returns {sport: {league: [matches]}}
+    # We want to output sections based on Priority Score.
+    
+    # Flatten stack to list of (LeagueName, Matches, Score)
+    league_buckets = []
+    
+    # PRIORITIES DICT: "NBA": { score: 99, isLeague: true, ... }
+    
+    for sport, leagues in entity_stack.items():
+        for league_name, matches in leagues.items():
+            # Match against priorities
+            # default score
+            score = 0
+            
+            # Check explicit priority
+            # 1. Check strict key match
+            p_data = None
+            
+            # Try finding a key in priority that matches this league
+            # e.g. Priority Key "Premier League" matches league "English Premier League"
+            found_key = None
+            for p_key, p_val in priorities.items():
+                if p_key.startswith('_'): continue
+                if p_key.lower() in league_name.lower():
+                    p_data = p_val
+                    found_key = p_key
+                    break
+            
+            if p_data:
+                score = p_data.get('score', 50)
+                if p_data.get('isHidden'): continue
+            else:
+                # If Strict Mode is ON, skip
+                if priorities.get('_HIDE_OTHERS'): continue
+            
+            # Filter matches that are already in top 5? 
+            # JS logic does: if (!claimedIds.has(m.id))
+            # meaningful for "Top 5" overlap. 
+            # For simplicity in Python, we will include them. User can see them twice or we filter.
+            # Let's filter matches present in Top 5 (using IDs)
+            top5_ids = set(m.get('id') for m in top_5)
+            filtered_matches = [m for m in matches if m.get('id') not in top5_ids and not m.get('is_live')]
+            
+            if filtered_matches:
+                league_buckets.append({
+                    'title': found_key if found_key else league_name.title(),
+                    'matches': filtered_matches,
+                    'score': score
+                })
+
+    # Sort buckets by score
+    league_buckets.sort(key=lambda x: x['score'], reverse=True)
+    
+    for bucket in league_buckets:
+        html_grouped += generate_section_html('grouped-sec', bucket['title'], bucket['matches'])
+
+
+    # 4. Generate Pages
     print("🔨 Generating Static HTML...")
     template_path = os.path.join(CMS_ROOT, 'assets', 'master_template.html')
     if not os.path.exists(template_path):
@@ -255,132 +389,156 @@ def main():
     with open(template_path, 'r', encoding='utf-8') as f:
         master_html = f.read()
 
-    # Create Pages
-    processed_count = 0
-    for sport, leagues in entity_stack.items():
-        for league, matches in leagues.items():
-            
-            # --- FILTERING LOGIC ---
-            # Check if this league is in the allowed list
-            # We try exact match first, then fuzzy or partial
-            is_allowed = False
-            config_league_name = league # Default to API name
-            
-            # 1. Direct key match (lowercased)
-            if league.lower() in allowed_leagues:
-                is_allowed = True
-                config_league_name = league.title() 
-            else:
-                # 2. Search in allowed keys
-                for allowed_name in allowed_leagues.keys():
-                    if allowed_name in league.lower() or league.lower() in allowed_name:
-                        is_allowed = True
-                        config_league_name = allowed_name.title() # Use the Config's pretty name
-                        break
-            
-            if not is_allowed:
-                # print(f"  ⏩ Skipping {league} (Not checked in Admin Panel)")
-                continue
-
-            # Generate Match Rows
-            rows_html = ""
-            current_matches = matches # matches is already the list for this league
-            
-            # Retrieve settings for domain usage
-            settings = config.get('site_settings', {})
-            
-            for i, m in enumerate(current_matches):
-                try:
-                    rows_html += generate_match_row(m)
-                except Exception as e:
-                    print(f"⚠️  Skipping match index {i} in {sport}/{league}: {e}")
-            
-            # Inject into Template
-            # We replace the grouped-container with the actual content
-            page_html = master_html.replace(
-                '<div id="grouped-container"></div>', 
-                f'<div id="grouped-container" class="static-stack">{rows_html}</div>'
-            )
-            
-            # Schema Injection (Phase 3)
-            # We construct the domain from settings or default
-            domain = settings.get('domain', 'streameast.guru')
-            static_schema_json = generate_static_schema(current_matches, domain)
-            
-            # We need to inject this into the HEAD. 
-            # The template has a placeholder or we append to head.
-            # For now, we'll append before </head>
-            schema_script = f'<script type="application/ld+json">{static_schema_json}</script>'
-            page_html = page_html.replace('</head>', f'{schema_script}\n</head>')
-            
-            # Basic SEO Injection (Placeholder for now)
-            page_html = page_html.replace('{{META_TITLE}}', f"{config_league_name} Live Stream - {sport.title()}")
-            page_html = page_html.replace('{{META_DESC}}', f"Watch {config_league_name} live. Full match schedule and streaming links.")
-            
-            # Cleanup other placeholders to avoid ugly tags
-            page_html = page_html.replace('{{HERO_TEXT}}', f"Live {config_league_name} Matches")
-            page_html = page_html.replace('{{H1_TITLE}}', config_league_name)
-
-            # --- NEW: Variable Injection Loop ---
-            # We assume config has 'theme', 'site_settings', 'social_sharing' etc.
-            # We flatten the config to find keys matching {{KEY}}
-            
-            # 1. Fill Theme Variables
-            theme = config.get('theme', {})
-            for k, v in theme.items():
-                key_upper = f"THEME_{k.upper()}"
-                page_html = page_html.replace(f'{{{{{key_upper}}}}}', str(v))
-                
-            # 2. Fill Site Settings
-            settings = config.get('site_settings', {})
-            for k, v in settings.items():
-                key_upper = k.upper() # e.g. DOMAIN
-                page_html = page_html.replace(f'{{{{{key_upper}}}}}', str(v))
-                
-            # 3. Fill specific known placeholders that might use mixed keys
-            page_html = page_html.replace('{{SITE_NAME}}', settings.get('title_part_1', 'Sport') + settings.get('title_part_2', 'Stream'))
-            page_html = page_html.replace('{{CANONICAL_URL}}', f"https://{settings.get('domain', '')}/{slugify(config_league_name)}-streams/")
-            
-            # 4. Clean leftover common placeholders (Text, etc)
-            # This is a brute-force cleanup for demo purposes to avoid {{...}} showing up
-            page_html = re.sub(r'\{\{[A-Z0-9_]+\}\}', '', page_html)
-            
-            # Write File with Legacy Slug Logic
-            # Legacy: normalize_key(name) + "-streams"
-            # Using config_league_name which is the "Pretty Name" from config if matched
-            
-            slug = slugify(config_league_name) + "-streams"
-            if slug == "-streams": slug = slugify(league) + "-streams" # Fallback
-            
-            # Since user wants "folder per league", we stick to our cleaner structure 
-            # BUT we should probably output to `slug` folder to match legacy URLs if they were /slug/index.html
-            out_dir = os.path.join(CMS_ROOT, slug) 
-            os.makedirs(out_dir, exist_ok=True)
-            out_file = os.path.join(out_dir, 'index.html')
-            
-            try:
-                with open(out_file, 'w', encoding='utf-8') as f:
-                    f.write(page_html)
-                processed_count += 1
-            except Exception as e:
-                print(f"❌ Failed to write {out_file}: {e}")
-
-    print(f"✅ Generated {processed_count} pages based on Admin Panel settings.")
+    # --- PAGE GENERATION LOOP ---
+    # We define which pages to build based simply on the ALLOWED LIST + Homepage
     
-    # Debug Stats
-    print(f"📊 Processed {len(entity_stack)} sports.")
-    for s, leagues in entity_stack.items():
-        print(f"   - {s}: {len(leagues)} leagues")
+    # 1. Homepage
+    home_html = master_html
+    
+    # Inject Content
+    # Live
+    if html_live_section:
+        home_html = home_html.replace('<div id="trending-list" class="match-list"></div>', f'<div id="trending-list" class="match-list">{html_live_section}</div>')
+        # We MUST unhide the wrapper
+        home_html = home_html.replace('style="display:none;"', '') # Unhide all? Dangerous.
+        # Better: target the specific ID
+        home_html = home_html.replace('id="live-content-wrapper" style="display:none;"', 'id="live-content-wrapper"')
+        # Also hide skeletons
+        home_html = home_html.replace('id="live-sk-head"', 'id="live-sk-head" style="display:none"')
+        home_html = home_html.replace('id="live-skeleton"', 'id="live-skeleton" style="display:none"')
+        # Update Count
+        home_html = home_html.replace('id="live-count"></div>', f'id="live-count">● {len(live_matches)} Live Events</div>')
+        
+    # Top 5
+    if html_top_upcoming:
+        home_html = home_html.replace('<div id="top-upcoming-container"></div>', f'<div id="top-upcoming-container">{html_top_upcoming}</div>')
+        home_html = home_html.replace('id="upcoming-skeleton"', 'id="upcoming-skeleton" style="display:none"')
+        
+    # Grouped
+    if html_grouped:
+         home_html = home_html.replace('<div id="grouped-container"></div>', f'<div id="grouped-container">{html_grouped}</div>')
+    
+    # SEO & Variables (Homepage)
+    settings = config.get('site_settings', {})
+    home_html = inject_variables(home_html, config, is_home=True)
+    
+    # Save Homepage
+    with open(os.path.join(CMS_ROOT, 'index.html'), 'w', encoding='utf-8') as f:
+        f.write(home_html)
+    print("✅ Generated: index.html (Homepage)")
+    
+    # 2. League/Sport Pages
+    # Rule: Only generate if hasLink is True in priorities
+    
+    processed_count = 0
+    for p_key, p_val in priorities.items():
+        if p_key.startswith('_'): continue
+        if not isinstance(p_val, dict): continue
+        
+        # STRICT CHECK: hasLink must be true
+        if not p_val.get('hasLink'):
+            continue
+            
+        # Find matches for this key
+        # We need to aggregate all matches (Live + Upcoming) that match this key
+        page_matches = []
+        for m in all_matches:
+            league = m.get('league', '').lower()
+            sport = m.get('sport', '').lower()
+            key_lower = p_key.lower()
+            
+            if key_lower in league or key_lower in sport:
+                page_matches.append(m)
+        
+        if not page_matches:
+            # Maybe generate empty page? Or skip?
+            # User expectation: "no extra pages". If no matches, maybe still current page structure but empty info?
+            # Let's generate it essentially empty but valid.
+            pass
+            
+        # Prepare content for this page
+        # This page focuses only on this league/sport.
+        # So "Live" section is specific to this, Top 5 is specific, Grouped is specific.
+        
+        # Filter for this page
+        p_live = [m for m in page_matches if m.get('is_live')]
+        p_upcoming = [m for m in page_matches if not m.get('is_live')]
+        
+        # Generate HTML blobs
+        p_html_live = ""
+        if p_live:
+            p_html_live = "".join([generate_match_row(m) for m in p_live])
+            
+        # For specific pages, we usually just show one big list, but keeping structure is safer
+        p_html_grouped = generate_section_html('grouped-sec', "Schedule", p_upcoming)
+        
+        # Inject
+        page_html = master_html
+        
+        if p_html_live:
+            page_html = page_html.replace('<div id="trending-list" class="match-list"></div>', f'<div id="trending-list" class="match-list">{p_html_live}</div>')
+            page_html = page_html.replace('id="live-content-wrapper" style="display:none;"', 'id="live-content-wrapper"')
+            page_html = page_html.replace('id="live-sk-head"', 'id="live-sk-head" style="display:none"')
+            page_html = page_html.replace('id="live-skeleton"', 'id="live-skeleton" style="display:none"')
+            page_html = page_html.replace('id="live-count"></div>', f'id="live-count">● {len(p_live)} Live Events</div>')
+            
+        if p_html_grouped:
+             page_html = page_html.replace('<div id="grouped-container"></div>', f'<div id="grouped-container">{p_html_grouped}</div>')
+        
+        # Hide skeletons unconditionally for sub-pages to clean up if no matches
+        page_html = page_html.replace('id="upcoming-skeleton"', 'id="upcoming-skeleton" style="display:none"')
+        
+        # Variables
+        page_html = inject_variables(page_html, config, title=p_key, is_home=False)
+        
+        # Slug Logic
+        slug = slugify(p_key) + "-streams"
+        out_dir = os.path.join(CMS_ROOT, slug)
+        os.makedirs(out_dir, exist_ok=True)
+        with open(os.path.join(out_dir, 'index.html'), 'w', encoding='utf-8') as f:
+            f.write(page_html)
+            
+        processed_count += 1
 
-    # 4. Save to System Core for Inspection
-    print(f"💾 Saving processed data to {OUTPUT_PREVIEW_JSON}...")
-    try:
-        os.makedirs(os.path.dirname(OUTPUT_PREVIEW_JSON), exist_ok=True)
-        with open(OUTPUT_PREVIEW_JSON, 'w', encoding='utf-8') as f:
-            json.dump(entity_stack, f, indent=4)
-        print("✅ Success! Data inspection ready.")
-    except Exception as e:
-        print(f"❌ File Save Error: {e}")
+    print(f"✅ Generated {processed_count} sub-pages (HasLink Rules Applied).")
+    
+def inject_variables(html, config, title=None, is_home=False):
+    settings = config.get('site_settings', {})
+    theme = config.get('theme', {})
+    
+    # Basic
+    page_title = settings.get('title_part_1', 'Sport') + settings.get('title_part_2', 'Stream')
+    if title:
+        meta_title = f"{title} Live Streams - {page_title}"
+        h1 = title
+        intro = f"Watch high quality {title} streams live."
+    else:
+        meta_title = settings.get('title', f"Live Sports Streams - {page_title}")
+        h1 = "Live Sports Schedule"
+        intro = "Welcome to the best sports streaming platform."
+
+    html = html.replace('{{META_TITLE}}', meta_title)
+    html = html.replace('{{H1_TITLE}}', h1)
+    html = html.replace('{{HERO_TEXT}}', intro)
+    
+    # Theme Inject
+    for k, v in theme.items():
+        key_upper = f"THEME_{k.upper()}"
+        html = html.replace(f'{{{{{key_upper}}}}}', str(v))
+        
+    # Footer Placeholders
+    html = html.replace('{{FOOTER_TEXT}}', settings.get('footer_text', ''))
+    html = html.replace('{{FOOTER_LINKS}}', settings.get('footer_links', ''))
+
+    # Cleanups
+    # This is a brute-force cleanup for demo purposes to avoid {{...}} showing up
+    html = re.sub(r'\{\{[A-Z0-9_]+\}\}', '', html)
+    return html
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        print(f"CRITICAL ERROR: {e}")

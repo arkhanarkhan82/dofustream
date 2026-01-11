@@ -116,6 +116,111 @@ function logout() {
     }
 }
 
+// --- CRON JOBS AUTOMATION ---
+
+function loadCronSettings() {
+    if (!currentConfig || !currentConfig.automation) return;
+    const auto = currentConfig.automation;
+    setValue('cronApiKey', auto.api_key);
+    setValue('cronJobId', auto.job_id);
+    setValue('cronInterval', auto.interval || "10");
+}
+
+async function saveCronSettings() {
+    if (!currentConfig) return;
+
+    const apiKey = getValue('cronApiKey');
+    const jobId = getValue('cronJobId');
+    const interval = getValue('cronInterval');
+
+    if (!apiKey || !jobId) {
+        showStatus('Please enter both API Key and Job ID', 'error');
+        return;
+    }
+
+    // Save to Config
+    currentConfig.automation = {
+        api_key: apiKey,
+        job_id: jobId,
+        interval: interval
+    };
+
+    // Try to Sync
+    showStatus('Saving and syncing with Cron-Job.org...', 'info');
+    const success = await syncWithCronJobOrg(apiKey, jobId, interval);
+
+    if (success) {
+        await saveConfigToGitHub(); // Save config persistence
+        showStatus('Automation settings saved and schedule updated!', 'success');
+    } else {
+        showStatus('Settings saved locally, but failed to sync with Cron-Job.org. Check API Key.', 'warning');
+        await saveConfigToGitHub();
+    }
+}
+
+async function syncWithCronJobOrg(apiKey, jobId, interval) {
+    const url = `https://api.cron-job.org/jobs/${jobId}`;
+
+    // Calculate Schedule
+    // Cron-Job.org uses minutes. "Every X minutes"
+    // We need to fetch the existing job to preserve its URL, or user needs to set it properly first.
+    // For this implementation, we will ONLY update the schedule.
+
+    try {
+        const response = await fetch(url, {
+            method: 'PATCH', // or PUT depending on their API version, usually PATCH for partial
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+                job: {
+                    schedule: {
+                        minutes: [`*/${interval}`] // Simple "Every N minutes" syntax
+                    }
+                }
+            })
+        });
+
+        if (response.ok) {
+            return true;
+        } else {
+            console.error('Cron Update Failed:', await response.text());
+            return false;
+        }
+    } catch (e) {
+        console.error('Cron Network Error:', e);
+        return false;
+    }
+}
+
+async function testCronConnection() {
+    const apiKey = getValue('cronApiKey');
+    if (!apiKey) {
+        showStatus('Enter API Key to test', 'error');
+        return;
+    }
+
+    try {
+        showStatus('Testing connection...', 'info');
+        const response = await fetch('https://api.cron-job.org/jobs', {
+            headers: { 'Authorization': `Bearer ${apiKey}` }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const jobCount = data.jobs ? data.jobs.length : 0;
+            document.getElementById('cron-status').innerHTML = `<span style="color:var(--status-green)">✅ Connected! Found ${jobCount} jobs.</span>`;
+            showStatus('Connection Successful', 'success');
+        } else {
+            throw new Error('Invalid API Key or Permissions');
+        }
+    } catch (e) {
+        document.getElementById('cron-status').innerHTML = `<span style="color:var(--brand-primary)">❌ Connection Failed: ${e.message}</span>`;
+        showStatus('Connection Failed', 'error');
+    }
+}
+
 // Check for saved credentials on load
 // Check for saved credentials on load
 window.addEventListener('DOMContentLoaded', () => {
@@ -404,7 +509,6 @@ function populateAllFields() {
     if (!currentConfig) return;
     const s = currentConfig.site_settings || {};
 
-    const setVal = (id, v) => { if (document.getElementById(id)) document.getElementById(id).value = v || ""; };
 
     setVal('apiUrl', s.api_url);
     setVal('titleP1', s.title_part_1);
@@ -452,8 +556,10 @@ function populateAllFields() {
     setVal('tplExcludePages', a.excluded);
     setVal('tplLeagueH1', a.league_h1);
     setVal('tplLeagueIntro', a.league_intro);
-    setVal('tplLeagueLiveTitle', a.league_live_title);
     setVal('tplLeagueUpcomingTitle', a.league_upcoming_title);
+
+    // Automation
+    loadCronSettings();
 }
 
 function setValue(id, value) {
@@ -463,6 +569,10 @@ function setValue(id, value) {
 function getValue(id) {
     return document.getElementById(id)?.value || '';
 }
+
+// Global aliases for legacy support
+window.setVal = setValue;
+window.getVal = getValue;
 
 async function saveAllChanges() {
     if (!GITHUB.connected) {
