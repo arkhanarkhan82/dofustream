@@ -7370,17 +7370,10 @@
     "Salzburg": "/assets/logos/streamed/salzburg.webp",
     "Robbie Mcguigan": "/assets/logos/streamed/robbie-mcguigan.webp",
     "Purdue": "/assets/logos/streamed/purdue.webp",
-    "Miami \ud83c\udfbe": "/assets/logos/streamed/miami.webp",
-    "ATP/WTA 1000: Miami \ud83c\udfbe": "/assets/logos/streamed/miami.webp",
-    "KK Crvena zvezda": "/assets/logos/streamed/kk-crvena-zvezda.webp",
     "Philadelphia 76ers": "/assets/logos/streamed/philadelphia-76ers.webp",
-    "T\u00fcrkiye": "/assets/logos/streamed/turkiye.webp",
-    "Bosnia-Herzegovina": "/assets/logos/streamed/bosnia-herzegovina.webp",
-    "N.Ireland": "/assets/logos/streamed/nireland.webp",
     "St. Louis Cardinals": "/assets/logos/streamed/stlouis-cardinals.webp",
-    "TBA": "/assets/logos/streamed/tba.webp",
-    "NJ/NY Gotham W": "/assets/logos/streamed/njny-gotham-w.webp",
-    "Am\u00e9rica de Cali": "/assets/logos/streamed/am\u00e9rica-de-cali.webp"
+    "Crvena zvezda": "/assets/logos/streamed/crvena-zvezda.webp",
+    "TBA": "/assets/logos/streamed/tba.webp"
   },
   "leagues": {
     "Turkey   Super Lig": "/assets/logos/leagues/turkey---super-lig.webp",
@@ -8456,10 +8449,8 @@
     "Greece Cup": "/assets/logos/leagues/greece-cup.webp",
     "Netherlands   Tweede Divisie": "/assets/logos/leagues/netherlands---tweede-divisie.webp",
     "Dfb Pokal": "/assets/logos/leagues/dfb-pokal.webp",
-    "football": "/assets/logos/leagues/football.webp",
     "NBA": "/assets/logos/leagues/nba.webp",
     "NHL": "/assets/logos/leagues/nhl.webp",
-    "hockey": "/assets/logos/leagues/hockey.webp",
     "basketball": "/assets/logos/leagues/basketball.webp",
     "Germany - BundesLeague": "/assets/logos/leagues/germany-bundesleague.webp"
   }
