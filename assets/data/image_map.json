@@ -7700,12 +7700,11 @@
     "Romania": "/assets/logos/streamed/romania.webp",
     "Gimnasia Y Esgrima De La Plata": "/assets/logos/streamed/gimnasia-y-esgrima-de-la-plata.webp",
     "Winthrop": "/assets/logos/streamed/winthrop.webp",
-    "Carano": "/assets/logos/streamed/casarano.webp",
-    "LA Galaxy": "/assets/logos/streamed/la-galaxy.webp",
-    "CD Guadalajara": "/assets/logos/streamed/cd-guadalajara.webp",
     "St. George Illawara Dragons": "/assets/logos/streamed/st-george-illawara-dragons.webp",
+    "United States": "/assets/logos/streamed/united-states-w.webp",
     "USA Ice Hockey": "/assets/logos/streamed/usa-ice-hockey.webp",
     "Brighton and Hove Albion": "/assets/logos/tsdb/brighton-and-hove-albion.webp",
+    "Hull F.C.": "/assets/logos/streamed/hull-fc.webp",
     "AC Milan": "/assets/logos/tsdb/ac-milan.webp",
     "St. Louis Cardinals": "/assets/logos/streamed/stlouis-cardinals.webp",
     "Norway Ice hockey": "/assets/logos/streamed/norway-ice-hockey.webp",
@@ -8812,9 +8811,9 @@
     "League Cup Final Round": "/assets/logos/leagues/league-cup-final-round.webp",
     "Pwhl": "/assets/logos/leagues/pwhl.webp",
     "Champions League Play In": "/assets/logos/leagues/champions-league-play-in.webp",
-    "hockey": "/assets/logos/leagues/hockey.webp",
-    "football": "/assets/logos/leagues/football.webp",
     "tennis": "/assets/logos/leagues/tennis.webp",
+    "football": "/assets/logos/leagues/football.webp",
+    "hockey": "/assets/logos/leagues/hockey.webp",
     "basketball": "/assets/logos/leagues/basketball.webp"
   }
 }
