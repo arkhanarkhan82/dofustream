@@ -6949,6 +6949,7 @@
     "Kaan Ofli": "/assets/logos/streamed/kaan-ofli.webp",
     "Imatran Kettera": "/assets/logos/streamed/imatran-kettera.webp",
     "Northern Arizona": "/assets/logos/streamed/northern-arizona.webp",
+    "England U17": "/assets/logos/streamed/england-u17.webp",
     "Breogan": "/assets/logos/streamed/breogan.webp",
     "Rogle": "/assets/logos/streamed/rogle.webp",
     "Northhorn Lingen": "/assets/logos/streamed/northhorn-lingen.webp",
@@ -7725,16 +7726,17 @@
     "Fh Hafnarfjordur": "/assets/logos/streamed/fh-hafnarfjordur.webp",
     "Polokwane": "/assets/logos/streamed/polokwane.webp",
     "Central Florida Knights": "/assets/logos/streamed/central-florida-knights.webp",
+    "USA Ice Hockey": "/assets/logos/streamed/usa-ice-hockey.webp",
+    "Norway Ice hockey": "/assets/logos/streamed/norway-ice-hockey.webp",
     "St. Louis Cardinals": "/assets/logos/streamed/stlouis-cardinals.webp",
     "St. Louis Battlehawks": "/assets/logos/streamed/st-louis-battlehawks.webp",
     "Paris Saint-Germain": "/assets/logos/streamed/paris-saint-germain.webp",
     "Raiders": "/assets/logos/streamed/randers.webp",
     "DC Defenders": "/assets/logos/streamed/dc-defenders.webp",
-    "Atletico-MG": "/assets/logos/streamed/atletico-mg.webp",
-    "UCV": "/assets/logos/streamed/ucv.webp",
-    "Independiente del Valle": "/assets/logos/streamed/independiente-del-valle.webp",
-    "Vasco da Gama": "/assets/logos/streamed/vasco-da-gama.webp",
-    "Sporting JAX": "/assets/logos/streamed/sporting-jax.webp"
+    "America de Cali": "/assets/logos/streamed/america-de-cali.webp",
+    "U. Catolica": "/assets/logos/streamed/u-catolica.webp",
+    "Bosnia-Herzegovina": "/assets/logos/streamed/bosnia-herzegovina.webp",
+    "Supra du Quebec": "/assets/logos/streamed/supra-du-quebec.webp"
   },
   "leagues": {
     "Wta Cluj Napoca Rom": "/assets/logos/leagues/wta-cluj-napoca-rom.webp",
@@ -8810,9 +8812,9 @@
     "Wta Australian Open Siniakova Katerina Anisimova Amanda": "/assets/logos/leagues/wta-australian-open-siniakova-katerina-anisimova-amanda.webp",
     "Euroleague": "/assets/logos/leagues/euroleague.webp",
     "2 Liga": "/assets/logos/leagues/2-liga.webp",
-    "football": "/assets/logos/leagues/football.webp",
-    "tennis": "/assets/logos/leagues/tennis.webp",
+    "hockey": "/assets/logos/leagues/hockey.webp",
     "basketball": "/assets/logos/leagues/basketball.webp",
-    "hockey": "/assets/logos/leagues/hockey.webp"
+    "tennis": "/assets/logos/leagues/tennis.webp",
+    "football": "/assets/logos/leagues/football.webp"
   }
 }
