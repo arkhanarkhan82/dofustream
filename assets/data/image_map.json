@@ -1115,6 +1115,7 @@
     "Bravo": "/assets/logos/streamed/bravo.webp",
     "Leicester City W": "/assets/logos/streamed/leicester-city-w.webp",
     "Rogaska": "/assets/logos/streamed/rogaska.webp",
+    "Greece U21": "/assets/logos/streamed/greece-u21.webp",
     "Thiago Agustin Tirante": "/assets/logos/streamed/thiago-agustin-tirante.webp",
     "Czech Republic Baseball": "/assets/logos/streamed/czech-republic-baseball.webp",
     "Baylor": "/assets/logos/streamed/baylor.webp",
@@ -1493,6 +1494,7 @@
     "Vitoria Guimaraes": "/assets/logos/streamed/vitoria-guimaraes.webp",
     "Cesson Rennes Mhb": "/assets/logos/streamed/cesson-rennes-mhb.webp",
     "Ohio Bobcats": "/assets/logos/streamed/ohio-bobcats.webp",
+    "Croatia U21": "/assets/logos/streamed/croatia-u21.webp",
     "Nagano": "/assets/logos/streamed/nagano.webp",
     "Geelong Cats": "/assets/logos/streamed/geelong-cats.webp",
     "Sportivo Luqueno": "/assets/logos/streamed/sportivo-luqueno.webp",
@@ -7726,16 +7728,18 @@
     "Fh Hafnarfjordur": "/assets/logos/streamed/fh-hafnarfjordur.webp",
     "Polokwane": "/assets/logos/streamed/polokwane.webp",
     "Central Florida Knights": "/assets/logos/streamed/central-florida-knights.webp",
-    "Norway Ice hockey": "/assets/logos/streamed/norway-ice-hockey.webp",
     "St. Louis Cardinals": "/assets/logos/streamed/stlouis-cardinals.webp",
-    "St. Louis Battlehawks": "/assets/logos/streamed/st-louis-battlehawks.webp",
-    "Paris Saint-Germain": "/assets/logos/streamed/paris-saint-germain.webp",
+    "St Louis BattleHawks": "/assets/logos/streamed/st-louis-battlehawks.webp",
+    "ACT Brumbies": "/assets/logos/streamed/act-brumbies.webp",
+    "ALBA Berlin": "/assets/logos/streamed/alba-berlin.webp",
+    "Paris SG": "/assets/logos/streamed/paris-sg.webp",
     "Raiders": "/assets/logos/streamed/randers.webp",
     "DC Defenders": "/assets/logos/streamed/dc-defenders.webp",
-    "America de Cali": "/assets/logos/streamed/america-de-cali.webp",
-    "U. Catolica": "/assets/logos/streamed/u-catolica.webp",
     "Bosnia-Herzegovina": "/assets/logos/streamed/bosnia-herzegovina.webp",
-    "Supra du Quebec": "/assets/logos/streamed/supra-du-quebec.webp"
+    "Supra du Quebec": "/assets/logos/streamed/supra-du-quebec.webp",
+    "Real Sociedad II": "/assets/logos/streamed/real-sociedad-ii.webp",
+    "HFX Wanderers": "/assets/logos/streamed/hfx-wanderers.webp",
+    "Sporting de Gij\u00f3n": "/assets/logos/streamed/sporting-de-gij\u00f3n.webp"
   },
   "leagues": {
     "Wta Cluj Napoca Rom": "/assets/logos/leagues/wta-cluj-napoca-rom.webp",
@@ -8811,9 +8815,9 @@
     "Wta Australian Open Siniakova Katerina Anisimova Amanda": "/assets/logos/leagues/wta-australian-open-siniakova-katerina-anisimova-amanda.webp",
     "Euroleague": "/assets/logos/leagues/euroleague.webp",
     "2 Liga": "/assets/logos/leagues/2-liga.webp",
-    "hockey": "/assets/logos/leagues/hockey.webp",
+    "basketball": "/assets/logos/leagues/basketball.webp",
     "tennis": "/assets/logos/leagues/tennis.webp",
-    "football": "/assets/logos/leagues/football.webp",
-    "basketball": "/assets/logos/leagues/basketball.webp"
+    "hockey": "/assets/logos/leagues/hockey.webp",
+    "football": "/assets/logos/leagues/football.webp"
   }
 }
