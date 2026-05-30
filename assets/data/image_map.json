@@ -6722,6 +6722,7 @@
     "England U20": "/assets/logos/streamed/england-u20.webp",
     "Sporting San Jose": "/assets/logos/streamed/sporting-san-jose.webp",
     "Young Lions": "/assets/logos/streamed/young-lions.webp",
+    "Sussex Sharks": "/assets/logos/streamed/sussex-sharks.webp",
     "Pbc Mba Moscow": "/assets/logos/streamed/pbc-mba-moscow.webp",
     "Sedis Basquet W": "/assets/logos/streamed/sedis-basquet-w.webp",
     "Hvidovre If": "/assets/logos/streamed/hvidovre-if.webp",
@@ -7743,6 +7744,7 @@
     "Norway Ice hockey": "/assets/logos/streamed/norway-ice-hockey.webp",
     "ALBA Berlin": "/assets/logos/streamed/alba-berlin.webp",
     "Paris SG": "/assets/logos/streamed/paris-sg.webp",
+    "Middlesex t20": "/assets/logos/streamed/middlesex-t20.webp",
     "St. Louis Cardinals": "/assets/logos/streamed/stlouis-cardinals.webp",
     "St. George Illawara Dragons": "/assets/logos/streamed/st-george-illawara-dragons.webp",
     "DC Defenders": "/assets/logos/streamed/dc-defenders.webp",
@@ -8835,9 +8837,9 @@
     "Wta Australian Open Siniakova Katerina Anisimova Amanda": "/assets/logos/leagues/wta-australian-open-siniakova-katerina-anisimova-amanda.webp",
     "Euroleague": "/assets/logos/leagues/euroleague.webp",
     "2 Liga": "/assets/logos/leagues/2-liga.webp",
+    "hockey": "/assets/logos/leagues/hockey.webp",
     "tennis": "/assets/logos/leagues/tennis.webp",
     "basketball": "/assets/logos/leagues/basketball.webp",
-    "hockey": "/assets/logos/leagues/hockey.webp",
     "football": "/assets/logos/leagues/football.webp"
   }
 }
