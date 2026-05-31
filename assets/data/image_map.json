@@ -3731,6 +3731,7 @@
     "Bnei Yehuda Tel Aviv": "/assets/logos/streamed/bnei-yehuda-tel-aviv.webp",
     "Hc Sochi": "/assets/logos/streamed/hc-sochi.webp",
     "Tipperary Gaa Football": "/assets/logos/streamed/tipperary-gaa-football.webp",
+    "Brighton Wfc": "/assets/logos/streamed/brighton-wfc.webp",
     "Illinois State Redbirds": "/assets/logos/streamed/illinois-state-redbirds.webp",
     "North Carolina Central": "/assets/logos/streamed/north-carolina-central.webp",
     "Lusitania": "/assets/logos/streamed/lusitania.webp",
@@ -7741,23 +7742,21 @@
     "Fh Hafnarfjordur": "/assets/logos/streamed/fh-hafnarfjordur.webp",
     "Polokwane": "/assets/logos/streamed/polokwane.webp",
     "Central Florida Knights": "/assets/logos/streamed/central-florida-knights.webp",
-    "Paris SG": "/assets/logos/streamed/paris-sg.webp",
-    "Middlesex t20": "/assets/logos/streamed/middlesex-t20.webp",
-    "Sporting de Gij\u00f3n": "/assets/logos/streamed/sporting-de-gij\u00f3n.webp",
-    "HFX Wanderers": "/assets/logos/streamed/hfx-wanderers.webp",
     "St. Louis Cardinals": "/assets/logos/streamed/stlouis-cardinals.webp",
     "St. George Illawara Dragons": "/assets/logos/streamed/st-george-illawara-dragons.webp",
+    "Brighton WFC": "/assets/logos/streamed/brighton-wfc.webp",
+    "Manchester City WFC": "/assets/logos/streamed/manchester-city-wfc.webp",
     "DC Defenders": "/assets/logos/streamed/dc-defenders.webp",
+    "USA": "/assets/logos/streamed/usa.webp",
     "Hamilton Tiger-Cats": "/assets/logos/streamed/hamilton-tiger-cats.webp",
-    "Trinidad and Tobago": "/assets/logos/streamed/trinidad-and-tobago.webp",
     "Deportivo de La Coru\u00f1a": "/assets/logos/streamed/deportivo-de-la-coru\u00f1a.webp",
     "Racing de Santander": "/assets/logos/streamed/racing-de-santander.webp",
     "Estudiantes de La Plata": "/assets/logos/streamed/estudiantes-de-la-plata.webp",
     "NJ/NY Gotham W": "/assets/logos/streamed/njny-gotham-w.webp",
     "Vasco DA Gama": "/assets/logos/streamed/vasco-da-gama.webp",
     "Atletico-MG": "/assets/logos/streamed/atletico-mg.webp",
-    "USA": "/assets/logos/streamed/usa.webp",
     "Defensa y Justicia": "/assets/logos/streamed/defensa-y-justicia.webp",
+    "FYR Macedonia": "/assets/logos/streamed/fyr-macedonia.webp",
     "Monaco GP": "/assets/logos/streamed/monaco.webp"
   },
   "leagues": {
@@ -8834,9 +8833,9 @@
     "Wta Australian Open Siniakova Katerina Anisimova Amanda": "/assets/logos/leagues/wta-australian-open-siniakova-katerina-anisimova-amanda.webp",
     "Euroleague": "/assets/logos/leagues/euroleague.webp",
     "2 Liga": "/assets/logos/leagues/2-liga.webp",
-    "football": "/assets/logos/leagues/football.webp",
-    "hockey": "/assets/logos/leagues/hockey.webp",
+    "basketball": "/assets/logos/leagues/basketball.webp",
     "tennis": "/assets/logos/leagues/tennis.webp",
-    "basketball": "/assets/logos/leagues/basketball.webp"
+    "football": "/assets/logos/leagues/football.webp",
+    "hockey": "/assets/logos/leagues/hockey.webp"
   }
 }
