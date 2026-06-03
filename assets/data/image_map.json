@@ -1187,6 +1187,7 @@
     "Queensland Fire": "/assets/logos/streamed/queensland-fire.webp",
     "Den Haag W": "/assets/logos/streamed/den-haag-w.webp",
     "Vallejos": "/assets/logos/streamed/vallejos.webp",
+    "El Salvador": "/assets/logos/streamed/el-salvador.webp",
     "Canberra United W": "/assets/logos/streamed/canberra-united-w.webp",
     "Polina Iatcenko": "/assets/logos/streamed/polina-iatcenko.webp",
     "Nicolai Budkov Kj\u00e6r": "/assets/logos/streamed/nicolai-budkov-kj\u00e6r.webp",
@@ -1817,6 +1818,7 @@
     "Derrick Lewis": "/assets/logos/streamed/derrick-lewis.webp",
     "Usa U18 W": "/assets/logos/streamed/usa-u18-w.webp",
     "Collingwood Football": "/assets/logos/streamed/collingwood-football.webp",
+    "Malta U21": "/assets/logos/streamed/malta-u21.webp",
     "Miomir Kecmanovic": "/assets/logos/streamed/miomir-kecmanovic.webp",
     "Seattle Sounders": "/assets/logos/streamed/seattle-sounders.webp",
     "Mosonmagyarovari Kc": "/assets/logos/streamed/mosonmagyarovari-kc.webp",
@@ -7752,13 +7754,13 @@
     "Polokwane": "/assets/logos/streamed/polokwane.webp",
     "Central Florida Knights": "/assets/logos/streamed/central-florida-knights.webp",
     "St. Louis Cardinals": "/assets/logos/streamed/stlouis-cardinals.webp",
-    "St.Louis Cardinals": "/assets/logos/streamed/stlouis-cardinals.webp",
     "Hamilton Tiger-Cats": "/assets/logos/streamed/hamilton-tiger-cats.webp",
     "Raiders": "/assets/logos/streamed/randers.webp",
     "Ottawa RedBlacks": "/assets/logos/streamed/ottawa-redblacks.webp",
     "DC Defenders": "/assets/logos/streamed/dc-defenders.webp",
     "St. Louis Battlehawks": "/assets/logos/streamed/st-louis-battlehawks.webp",
-    "Congo DR": "/assets/logos/streamed/congo-dr.webp",
+    "DR Congo": "/assets/logos/streamed/dr-congo.webp",
+    "N.Ireland": "/assets/logos/streamed/nireland.webp",
     "Monaco GP": "/assets/logos/streamed/monaco.webp"
   },
   "leagues": {
@@ -8835,9 +8837,9 @@
     "Wta Australian Open Siniakova Katerina Anisimova Amanda": "/assets/logos/leagues/wta-australian-open-siniakova-katerina-anisimova-amanda.webp",
     "Euroleague": "/assets/logos/leagues/euroleague.webp",
     "2 Liga": "/assets/logos/leagues/2-liga.webp",
-    "tennis": "/assets/logos/leagues/tennis.webp",
-    "football": "/assets/logos/leagues/football.webp",
     "basketball": "/assets/logos/leagues/basketball.webp",
-    "hockey": "/assets/logos/leagues/hockey.webp"
+    "hockey": "/assets/logos/leagues/hockey.webp",
+    "tennis": "/assets/logos/leagues/tennis.webp",
+    "football": "/assets/logos/leagues/football.webp"
   }
 }
