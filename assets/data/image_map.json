@@ -7757,15 +7757,15 @@
     "Fh Hafnarfjordur": "/assets/logos/streamed/fh-hafnarfjordur.webp",
     "Polokwane": "/assets/logos/streamed/polokwane.webp",
     "Central Florida Knights": "/assets/logos/streamed/central-florida-knights.webp",
-    "St. Louis Cardinals": "/assets/logos/streamed/stlouis-cardinals.webp",
+    "N.Ireland": "/assets/logos/streamed/nireland.webp",
     "Somerset t20": "/assets/logos/streamed/somerset-t20.webp",
     "Glamorgan t20": "/assets/logos/streamed/glamorgan-t20.webp",
     "Hamilton Tiger-Cats": "/assets/logos/streamed/hamilton-tiger-cats.webp",
     "ACT Brumbies": "/assets/logos/streamed/act-brumbies.webp",
+    "St. Louis Cardinals": "/assets/logos/streamed/stlouis-cardinals.webp",
     "Ottawa RedBlacks": "/assets/logos/streamed/ottawa-redblacks.webp",
     "DC Defenders": "/assets/logos/streamed/dc-defenders.webp",
     "St. Louis Battlehawks": "/assets/logos/streamed/st-louis-battlehawks.webp",
-    "N.Ireland": "/assets/logos/streamed/nireland.webp",
     "Monaco GP": "/assets/logos/streamed/monaco.webp",
     "Bosnia-Herzegovina Women": "/assets/logos/streamed/bosnia-herzegovina-women.webp",
     "2026 PFL Africa 2: Nigeria": "/assets/logos/streamed/nigeria.webp"
@@ -8844,9 +8844,9 @@
     "Wta Australian Open Siniakova Katerina Anisimova Amanda": "/assets/logos/leagues/wta-australian-open-siniakova-katerina-anisimova-amanda.webp",
     "Euroleague": "/assets/logos/leagues/euroleague.webp",
     "2 Liga": "/assets/logos/leagues/2-liga.webp",
-    "basketball": "/assets/logos/leagues/basketball.webp",
     "tennis": "/assets/logos/leagues/tennis.webp",
-    "hockey": "/assets/logos/leagues/hockey.webp",
-    "football": "/assets/logos/leagues/football.webp"
+    "football": "/assets/logos/leagues/football.webp",
+    "basketball": "/assets/logos/leagues/basketball.webp",
+    "hockey": "/assets/logos/leagues/hockey.webp"
   }
 }
