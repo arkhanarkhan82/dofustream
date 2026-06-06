@@ -7788,10 +7788,8 @@
     "Fh Hafnarfjordur": "/assets/logos/streamed/fh-hafnarfjordur.webp",
     "Polokwane": "/assets/logos/streamed/polokwane.webp",
     "Central Florida Knights": "/assets/logos/streamed/central-florida-knights.webp",
-    "Monaco GP": "/assets/logos/streamed/monaco.webp",
-    "St. Louis Cardinals": "/assets/logos/streamed/stlouis-cardinals.webp",
     "USA": "/assets/logos/streamed/usa.webp",
-    "Republic of Ireland U21": "/assets/logos/streamed/republic-of-ireland-u21.webp",
+    "St. Louis Cardinals": "/assets/logos/streamed/stlouis-cardinals.webp",
     "Bosnia-Herzegovina": "/assets/logos/streamed/bosnia-herzegovina.webp",
     "HFX Wanderers": "/assets/logos/streamed/hfx-wanderers.webp",
     "Supra du Qu\u00e9bec": "/assets/logos/streamed/supra-du-qu\u00e9bec.webp",
@@ -8874,8 +8872,8 @@
     "Euroleague": "/assets/logos/leagues/euroleague.webp",
     "2 Liga": "/assets/logos/leagues/2-liga.webp",
     "football": "/assets/logos/leagues/football.webp",
-    "tennis": "/assets/logos/leagues/tennis.webp",
     "basketball": "/assets/logos/leagues/basketball.webp",
+    "tennis": "/assets/logos/leagues/tennis.webp",
     "hockey": "/assets/logos/leagues/hockey.webp"
   }
 }
