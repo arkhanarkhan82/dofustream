@@ -6616,6 +6616,7 @@
     "Bellinzona": "/assets/logos/streamed/bellinzona.webp",
     "Graafschap": "/assets/logos/streamed/graafschap.webp",
     "U Bt Cluj": "/assets/logos/streamed/u-bt-cluj.webp",
+    "Cuba U23": "/assets/logos/streamed/cuba-u23.webp",
     "Kevin Doets": "/assets/logos/streamed/kevin-doets.webp",
     "Beijing Royal Fighters": "/assets/logos/streamed/beijing-royal-fighters.webp",
     "Milan": "/assets/logos/streamed/milan.webp",
@@ -7724,6 +7725,7 @@
     "South Australia": "/assets/logos/streamed/south-australia.webp",
     "Katerina Siniakova": "/assets/logos/streamed/katerina-siniakova.webp",
     "Ael Limassol": "/assets/logos/streamed/ael-limassol.webp",
+    "Costa Rica U23": "/assets/logos/streamed/costa-rica-u23.webp",
     "Michael Chiesa": "/assets/logos/streamed/michael-chiesa.webp",
     "Dinamo Jug": "/assets/logos/streamed/dinamo-jug.webp",
     "Noroeaste": "/assets/logos/streamed/noroeaste.webp",
@@ -7807,7 +7809,6 @@
     "DC Defenders": "/assets/logos/streamed/dc-defenders.webp",
     "BC Lions": "/assets/logos/streamed/bc-lions.webp",
     "Curacao": "/assets/logos/streamed/cura\u00e7ao.webp",
-    "Supra du Qu\u00e9bec": "/assets/logos/streamed/supra-du-qu\u00e9bec.webp",
     "HFX Wanderers": "/assets/logos/streamed/hfx-wanderers.webp",
     "2026 PFL Africa 2: Nigeria": "/assets/logos/streamed/nigeria.webp"
   },
@@ -8885,9 +8886,9 @@
     "Wta Australian Open Siniakova Katerina Anisimova Amanda": "/assets/logos/leagues/wta-australian-open-siniakova-katerina-anisimova-amanda.webp",
     "Euroleague": "/assets/logos/leagues/euroleague.webp",
     "2 Liga": "/assets/logos/leagues/2-liga.webp",
-    "tennis": "/assets/logos/leagues/tennis.webp",
+    "hockey": "/assets/logos/leagues/hockey.webp",
     "football": "/assets/logos/leagues/football.webp",
     "basketball": "/assets/logos/leagues/basketball.webp",
-    "hockey": "/assets/logos/leagues/hockey.webp"
+    "tennis": "/assets/logos/leagues/tennis.webp"
   }
 }
