@@ -7805,8 +7805,7 @@
     "Pogon Szczecin": "/assets/logos/streamed/pogon-szczecin.webp",
     "Zaglebie W": "/assets/logos/streamed/zaglebie-w.webp",
     "St. Louis Cardinals": "/assets/logos/streamed/stlouis-cardinals.webp",
-    "Congo DR": "/assets/logos/streamed/congo-dr.webp",
-    "C\u00f4te d'Ivoire": "/assets/logos/streamed/c\u00f4te-divoire.webp"
+    "Congo DR": "/assets/logos/streamed/congo-dr.webp"
   },
   "leagues": {
     "Brazil   Nbb": "/assets/logos/leagues/brazil---nbb.webp",
@@ -8883,8 +8882,8 @@
     "Primera Division Mazatlanfc": "/assets/logos/leagues/primera-division-mazatlanfc.webp",
     "Australia A League W": "/assets/logos/leagues/australia-a-league-w.webp",
     "football": "/assets/logos/leagues/football.webp",
-    "basketball": "/assets/logos/leagues/basketball.webp",
+    "hockey": "/assets/logos/leagues/hockey.webp",
     "tennis": "/assets/logos/leagues/tennis.webp",
-    "hockey": "/assets/logos/leagues/hockey.webp"
+    "basketball": "/assets/logos/leagues/basketball.webp"
   }
 }
