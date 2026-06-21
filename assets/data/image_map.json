@@ -7826,7 +7826,6 @@
     "UFC Fight Night: Kape": "/assets/logos/streamed/kape.webp",
     "St. Louis Cardinals": "/assets/logos/streamed/stlouis-cardinals.webp",
     "Congo DR": "/assets/logos/streamed/congo-dr.webp",
-    "C\u00f4te d'Ivoire": "/assets/logos/streamed/c\u00f4te-divoire.webp",
     "Austria GP": "/assets/logos/streamed/austria.webp"
   },
   "leagues": {
@@ -8903,7 +8902,8 @@
     "Ehf Euro Group E": "/assets/logos/leagues/ehf-euro-group-e.webp",
     "Primera Division Mazatlanfc": "/assets/logos/leagues/primera-division-mazatlanfc.webp",
     "Australia A League W": "/assets/logos/leagues/australia-a-league-w.webp",
-    "basketball": "/assets/logos/leagues/basketball.webp",
-    "football": "/assets/logos/leagues/football.webp"
+    "football": "/assets/logos/leagues/football.webp",
+    "tennis": "/assets/logos/leagues/tennis.webp",
+    "basketball": "/assets/logos/leagues/basketball.webp"
   }
 }
